@@ -1,1 +1,13 @@
 venv
+__pycache__
+*.py[cod]
+*$py.class
+.molecule
+.cache
+vault.pass
+.vault.pass
+*.rc
+*.swp
+.vscode
+collections
+
