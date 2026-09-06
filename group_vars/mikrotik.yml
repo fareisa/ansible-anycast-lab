@@ -6,6 +6,5 @@ ansible_network_os: community.routeros.routeros
 ansible_user: admin
 
 ## mikrotik api
-port_api: 8728
 pass: 123
 user: tes

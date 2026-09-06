@@ -1,0 +1,22 @@
+- name: running task for lb4
+  hosts: lb4
+  become: true
+  tasks:
+
+    - name: install package
+      apt:
+        name:
+          - frr
+          - frr-pythontools
+        state: present
+        update_cache: true
+
+    - name: copy template config
+      template:
+        src: ../templates/frr-daemons.j2
+        dest: /etc/frr/daemons
+
+    - name: restart service frr
+      service:
+        name: frr
+        state: restarted

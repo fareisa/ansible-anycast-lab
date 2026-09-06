@@ -30,3 +30,12 @@
         - ip_address is defined
         - ip_address | length > 0
 
+    - name: debug
+      community.routeros.command:
+        commands:
+          - /ip address print
+      register: output
+
+    - name: out debug
+      debug:
+        msg: "{{ output }}"
