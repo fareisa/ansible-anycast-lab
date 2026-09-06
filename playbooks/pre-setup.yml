@@ -1,0 +1,18 @@
+- name: pre setup
+  hosts: mikrotik
+  gather_facts: false
+  tasks:
+
+    - name: set user api
+      community.routeros.command:
+        commands:
+          - /user add name=tes password=123 group=full
+      changed_when: false
+
+    - name: set system identity
+      community.routeros.command:
+        commands:
+          - /system/identity/set name="{{inventory_hostname}}"
+      changed_when: false
+
+
