@@ -1,0 +1,11 @@
+ip_address:
+  - interface: ether2
+    address: "{{ mikrotik_1.address.ovs1int }}"
+    comment: 'to mk3'
+
+  - interface: ether3
+    address: "{{ mikrotik_1.address.ovs2int }}"
+    comment: 'to mk4'
+
+  - interface: ether5
+    address: "{{ mikrotik_1.address.ovs4int }}"
