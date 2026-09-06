@@ -1,0 +1,11 @@
+#netbox_url: http://10.9.0.3:30080
+#netbox_token: nbt_dYvux7kptwBG.Uxc1k4MzFTIaeRBVury0OekazrjzALhQaUnvCu9C
+
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: community.routeros.routeros
+ansible_user: admin
+
+## mikrotik api
+port_api: 8728
+pass: 123
+user: tes

@@ -1,0 +1,101 @@
+- name: test api
+  hosts: netbox
+  gather_facts: false
+
+  tasks:
+    - name: show variable status
+      ansible.builtin.debug:
+        var: netbox_url
+
+    - name: Fetch status from API
+      ansible.builtin.uri:
+        url: "{{ netbox_url }}/api/dcim/devices/?platform=mikrotik-routeros"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ netbox_token }}"
+          Content-Type: "application/json"
+          Accept: "application/json; indent=4"
+        status_code: 200
+      register: api_response
+
+    - name: Display API response
+      ansible.builtin.debug:
+        msg: "{{ item.name }}"
+      loop: "{{ api_response.json.results }}"
+
+    - name: Display requested response
+      ansible.builtin.debug:
+        msg:
+          name: "{{ item.name }}"
+          ip: "{{ item.primary_ip.address }}"
+          site: "{{ item.site.name }}"
+      loop: "{{ api_response.json.results }}"
+
+    - name: Add devices to Ansible inventory
+      ansible.builtin.add_host:
+        name: "{{ item.name }}"
+        groups: mikrotik
+        ansible_host: "{{ item.primary_ip.address | ansible.utils.ipaddr('address') }}"
+      loop: "{{ api_response.json.results }}"
+      changed_when: false
+
+
+- name: Get interfaces from MikroTik
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+    - name: Get interfaces from NetBox
+      ansible.builtin.uri:
+        url: "{{ netbox_url }}/api/ipam/ip-addresses/?device={{ inventory_hostname }}"
+        method: GET
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+          Content-Type: "application/json"
+          Accept: "application/json; indent=4"
+        return_content: true
+        status_code: 200
+      delegate_to: localhost
+      register: ip_addresses
+
+#    - name: Show interfaces
+#      ansible.builtin.debug:
+#        msg:
+#          device: "{{ inventory_hostname }}"
+#          interface: "{{ item.name }}"
+#          type: "{{ item.type.label }}"
+#      loop: "{{ interfaces.json.results }}"
+
+    - name: Show IP addresses
+      ansible.builtin.debug:
+        msg:
+          device: "{{ inventory_hostname }}"
+          ip: "{{ item.address }}"
+          interface: "{{ item.assigned_object.name }}"
+      loop: "{{ ip_addresses.json.results }}"
+
+#- name: Test dynamic inventory
+#  hosts: mikrotik
+#  gather_facts: false
+#
+#  tasks:
+#    - name: Show dynamic host
+#      ansible.builtin.debug:
+#        msg: "Host {{ inventory_hostname }} has IP {{ ansible_host }}"
+#
+
+#- name: Test MikroTik connection
+#  hosts: mikrotik
+#  gather_facts: false
+#
+#  tasks:
+#    - name: Get RouterOS system resource
+#      community.routeros.command:
+#        commands:
+#          - /system/resource/print
+#      register: routeros_output
+#
+#    - name: Display RouterOS output
+#      ansible.builtin.debug:
+#        var: routeros_output.stdout_lines
+

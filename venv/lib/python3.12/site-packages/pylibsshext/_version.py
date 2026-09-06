@@ -1,0 +1,22 @@
+"""Version definition."""
+
+from ._libssh_version import (  # noqa: N811, WPS300
+    LIBSSH_VERSION as __libssh_version__,
+)
+
+
+try:
+    from ._scm_version import version as __version__  # noqa: WPS300
+except ImportError:
+    from pkg_resources import get_distribution as _get_dist
+
+    __version__ = _get_dist('ansible-pylibssh').version
+
+
+__full_version__ = (
+    f'<pylibsshext v{__version__!s} with libssh v{__libssh_version__!s}>'
+)
+__version_info__ = tuple(
+    (int(chunk) if chunk.isdigit() else chunk)
+    for chunk in __version__.split('.')
+)

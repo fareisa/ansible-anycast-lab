@@ -1,0 +1,60 @@
+---
+- name: Get MikroTik devices from NetBox
+  hosts: netbox
+  gather_facts: false
+
+  tasks:
+    - name: Get devices
+      ansible.builtin.uri:
+        url: "{{ netbox_url }}/api/dcim/devices/?platform=mikrotik-routeros"
+        method: GET
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+          Accept: "application/json"
+        return_content: true
+        status_code: 200
+      register: devices
+
+    - name: Add devices to Ansible inventory
+      ansible.builtin.add_host:
+        name: "{{ item.name }}"
+        groups: mikrotik
+        ansible_host: "{{ item.primary_ip.address | ansible.utils.ipaddr('address') }}"
+      loop: "{{ devices.json.results }}"
+
+
+- name: Build network data
+  hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+    - name: Get interfaces from NetBox
+      ansible.builtin.uri:
+        url: "{{ netbox_url }}/api/dcim/interfaces/?device={{ inventory_hostname }}"
+        method: GET
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+          Accept: "application/json"
+        return_content: true
+        status_code: 200
+      delegate_to: localhost
+      register: interfaces
+
+    - name: Get IP addresses from NetBox
+      ansible.builtin.uri:
+        url: "{{ netbox_url }}/api/ipam/ip-addresses/?device={{ inventory_hostname }}"
+        method: GET
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+          Accept: "application/json"
+        return_content: true
+        status_code: 200
+      delegate_to: localhost
+      register: ip_addresses
+
+    - name: Show interfaces and IP addresses
+      ansible.builtin.debug:
+        msg:
+          device: "{{ inventory_hostname }}"
+          interfaces: "{{ interfaces.json.results }}"
+          ip_addresses: "{{ ip_addresses.json.results }}"

@@ -1,0 +1,15 @@
+interfaces:
+  - default-name: 'ether1'
+    comment: 'remote'
+
+  - default-name: 'ether2'
+    comment: 'interzone'
+
+  - default-name: 'ether3'
+    comment: 'outerzone'
+
+  - default-name: 'ether4'
+    comment:
+
+  - default-name: 'ether5'
+    comment: 'client'
