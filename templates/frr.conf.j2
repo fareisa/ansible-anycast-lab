@@ -1,0 +1,11 @@
+frr version 10.7
+frr defaults traditional
+hostname {{ inventory_hostname }}
+
+router bgp {{ asn }}
+  bgp router-id {{ ansible_host }}
+
+{% for neighbor in bgp_neighbors %}
+  neighbor {{ neighbor.address }} remote-as {{ neighbor.remote_as }}
+{% endfor %}
+!

@@ -18,6 +18,5 @@ bgp_instance:
     router-id: "{{ ansible_host }}"
     as: "{{ asn }}"
 
-bgp_connection:
-  - name: "{{ bgp_name }}"
-  
+# bgp_connection:
+#   - name: "{{ bgp_name }}"

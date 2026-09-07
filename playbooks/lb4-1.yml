@@ -1,10 +1,34 @@
 - name: running task for lb4
   hosts: lb4
   become: true
-  tasks:
+  vars:
+    frr_version: "frr-stable"
 
-    - name: install package
-      apt:
+  tasks:
+    - name: Ensure keyrings directory exists
+      ansible.builtin.file:
+        path: /usr/share/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download FRR GPG key
+      ansible.builtin.get_url:
+        url: https://deb.frrouting.org/frr/keys.gpg
+        dest: /usr/share/keyrings/frrouting.gpg
+        mode: '0644'
+
+    - name: Add FRR DEB822 repository
+      ansible.builtin.deb822_repository:
+        name: frr
+        types: deb
+        uris: https://deb.frrouting.org/frr
+        suites: "{{ ansible_facts['distribution_release'] }}"
+        components: "{{ frr_version }}"
+        signed_by: /usr/share/keyrings/frrouting.gpg
+        state: present
+
+    - name: Update APT cache and install FRR packages
+      ansible.builtin.apt:
         name:
           - frr
           - frr-pythontools

@@ -1,8 +1,8 @@
 interfaces:
-  - default-name: 'ether1'
+  - default-name: ether1
     comment: 'remote'
 
-  - default-name: 'ether2'
+  - default-name: ether2
     comment: 'interzone'
 
   - default-name: 'ether3'
@@ -25,3 +25,11 @@ ip_address:
 
   - interface: ether5
     address: "{{ mikrotik_2.address.ovs4int }}"
+
+bgp_connection:
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: 
+    local.role:
+    remote.address:

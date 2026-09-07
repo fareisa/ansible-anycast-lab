@@ -21,7 +21,7 @@
       # delegate_to: mikrotik-1-ganjil
       # run_once: true
 
-    - name: create bgp bgp_instance
+    - name: create bgp instance
       community.routeros.api_modify:
         path: routing bgp instance
         data: "{{ bgp_instance }}"
@@ -31,8 +31,36 @@
       # delegate_to: mikrotik-1-ganjil
       # run_once: true
 
+    - name: create ibgp connection
+      community.routeros.api_modify:
+        path: routing bgp connection
+        data: "{{ ibgp_connection }}"
+      when: 
+        - ibgp_connection is defined
+        - ibgp_connection | length > 0
+      # delegate_to: mikrotik-3-ganjil
+      # run_once: true
 
+    # - name: debug
+    #   debug:
+    #     msg: "{{ ibgp_connection }}"
 
-    - name: debug
-      debug:
-        msg: "{{ bgp_instance }}"
+- name: Configure FRR
+  hosts: lb4-1-ganjil
+
+  tasks:
+    - name: Deploy FRR configuration
+      ansible.builtin.template:
+        src: ../templates/frr.conf.j2
+        dest: /etc/frr/frr.conf
+        owner: frr
+        group: frr
+        mode: "0640"
+      notify: Restart FRR
+
+  handlers:
+    - name: Restart FRR
+      ansible.builtin.systemd:
+        name: frr
+        state: restarted
+
