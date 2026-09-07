@@ -8,3 +8,16 @@ ansible_user: admin
 ## mikrotik api
 pass: 123
 user: tes
+
+## BGP config
+# bgp_template:
+#   - name: default
+
+bgp_instance:
+  - name: "{{ inventory_hostname }}"
+    router-id: "{{ ansible_host }}"
+    as: "{{ asn }}"
+
+bgp_connection:
+  - name: "{{ bgp_name }}"
+  

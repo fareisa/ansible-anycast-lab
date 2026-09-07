@@ -1,0 +1,38 @@
+- name: bgp configuration
+  hosts: mikrotik
+  gather_facts: false
+  module_defaults:
+    group/community.routeros.api:
+      hostname: "{{ ansible_host }}"
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      handle_absent_entries: "remove"
+      handle_entries_content: "remove_as_much_as_possible"
+
+  tasks:
+
+    # - name: create bgp template 
+    #   community.routeros.api_modify:
+    #     path: routing bgp template
+    #     data: "{{ bgp_template }}"
+    #   when:
+    #     - bgp_template is defined
+    #     - bgp_template | length > 0
+      # delegate_to: mikrotik-1-ganjil
+      # run_once: true
+
+    - name: create bgp bgp_instance
+      community.routeros.api_modify:
+        path: routing bgp instance
+        data: "{{ bgp_instance }}"
+      when: 
+        - bgp_instance is defined
+        - bgp_instance | length > 0
+      # delegate_to: mikrotik-1-ganjil
+      # run_once: true
+
+
+
+    - name: debug
+      debug:
+        msg: "{{ bgp_instance }}"
