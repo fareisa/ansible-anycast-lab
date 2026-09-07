@@ -46,7 +46,7 @@
     #     msg: "{{ ibgp_connection }}"
 
 - name: Configure FRR
-  hosts: lb4-1-ganjil
+  hosts: lb4
 
   tasks:
     - name: Deploy FRR configuration

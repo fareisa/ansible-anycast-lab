@@ -31,10 +31,18 @@ ip_address:
     comment: 'server-outerzone'
     address: "{{ mikrotik_4.address.ovs4int }}"
 
-bgp_connection:
+ibgp_connection:
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
-    remote.as: 
-    local.role:
-    remote.address:
+    remote.as: "{{ asn }}"
+    local.role: ibgp
+    remote.address: "{{ lb4_2.address.ovs3int }}"
+
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ asn }}"
+    local.role: ibgp
+    remote.address: "{{ lb4_3.address.ovs3int }}"
+
