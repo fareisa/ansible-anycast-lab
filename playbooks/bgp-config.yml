@@ -48,6 +48,7 @@
 
 - name: Configure FRR
   hosts: lb4
+  gather_facts: false
 
   tasks:
     - name: Deploy FRR configuration

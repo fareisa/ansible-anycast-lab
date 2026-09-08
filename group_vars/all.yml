@@ -1,3 +1,5 @@
+anycast_ip: 10.15.100.10
+
 mikrotik_1:
   address:
     ovs1int: 10.11.0.1

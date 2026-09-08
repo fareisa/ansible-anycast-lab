@@ -8,4 +8,6 @@ router bgp {{ asn }}
 {% for neighbor in bgp_neighbors %}
   neighbor {{ neighbor.address }} remote-as {{ neighbor.remote_as }}
 {% endfor %}
+
+  network {{ anycast_ip }}/32
 !

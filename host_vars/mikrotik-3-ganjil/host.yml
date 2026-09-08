@@ -41,6 +41,14 @@ bgp_connection:
     local.role: ibgp
     remote.address: "{{ lb4_1.address.ovs3int }}"
 
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ hostvars['mikrotik-1-ganjil']['asn'] }}"
+    local.role: ibgp
+    remote.address: "{{ mikrotik_1.address.ovs1int }}"
+
+
 ## EBGP
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -55,3 +63,10 @@ bgp_connection:
     remote.as: "{{ hostvars['lb4-3-genap']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ lb4_3.address.ovs4int }}"
+
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ hostvars['mikrotik-2-genap']['asn'] }}"
+    local.role: ebgp
+    remote.address: "{{ mikrotik_2.address.ovs2int }}"

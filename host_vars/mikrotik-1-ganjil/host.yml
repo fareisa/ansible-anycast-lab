@@ -27,9 +27,19 @@ ip_address:
     address: "{{ mikrotik_1.address.ovs4int }}/24"
 
 bgp_connection:
+
+## IBGP
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
-    remote.as: 
-    local.role:
-    remote.address: 
+    remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
+    local.role: ibgp
+    remote.address: "{{ mikrotik_3.address.ovs1int }}"
+
+## EBGP
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ hostvars['mikrotik-4-genap']['asn'] }}"
+    local.role: ebgp
+    remote.address: "{{ mikrotik_4.address.ovs2int }}"
