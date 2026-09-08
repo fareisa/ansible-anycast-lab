@@ -15,4 +15,8 @@
           - /system/identity/set name="{{inventory_hostname}}"
       changed_when: false
 
-
+    - name: allow resolver
+      community.routeros.command:
+        commands:
+          - /ip dns set allow-remote-requests=yes
+      changed_when: false

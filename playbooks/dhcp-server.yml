@@ -1,0 +1,36 @@
+- name: bgp configuration
+  hosts: mikrotik
+  gather_facts: false
+  module_defaults:
+    group/community.routeros.api:
+      hostname: "{{ ansible_host }}"
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      handle_absent_entries: "remove"
+      handle_entries_content: "remove_as_much_as_possible"
+
+  tasks:
+
+    - name: Create DHCP pool
+      community.routeros.api_modify:
+        path: ip pool
+        data: "{{ dhcp_pool }}"
+      when:
+        - dhcp_pool is defined
+        - dhcp_pool | length > 0
+
+    - name: Create DHCP network
+      community.routeros.api_modify:
+        path: ip dhcp-server network
+        data: "{{ dhcp_network }}"
+      when:
+        - dhcp_network is defined
+        - dhcp_network | length > 0
+
+    - name: Create DHCP server
+      community.routeros.api_modify:
+        path: ip dhcp-server
+        data: "{{ dhcp_server }}"
+      when:
+        - dhcp_server is defined
+        - dhcp_server | length > 0
