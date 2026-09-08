@@ -46,6 +46,8 @@ bgp_connection:
     remote.as: "{{ hostvars['lb4-2-genap']['asn'] }}"
     local.role: ibgp-rr
     remote.address: "{{ lb4_2.address.ovs3int }}"
+    output.network: bgp-network
+    nexthop-choice: force-self
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -53,6 +55,8 @@ bgp_connection:
     remote.as: "{{ hostvars['lb4-3-genap']['asn'] }}"
     local.role: ibgp-rr
     remote.address: "{{ lb4_3.address.ovs3int }}"
+    output.network: bgp-network
+    nexthop-choice: force-self
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -60,6 +64,8 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-2-genap']['asn'] }}"
     local.role: ibgp-rr
     remote.address: "{{ mikrotik_2.address.ovs1int }}"
+    output.network: bgp-network
+    nexthop-choice: force-self
 
 
 ## EBGP
@@ -77,3 +83,15 @@ bgp_connection:
     local.role: ebgp
     remote.address: "{{ mikrotik_1.address.ovs2int }}"
 
+address_list:
+  - list: bgp-network
+    address: 10.12.10.0/24
+
+  - list: bgp-network
+    address: 10.12.0.0/30
+
+  - list: bgp-network
+    address: 10.15.0.0/30
+
+  - list: bgp-network
+    address: 10.15.10.0/24

@@ -21,6 +21,14 @@
       # delegate_to: mikrotik-1-ganjil
       # run_once: true
 
+    - name: create bgp network address list
+      community.routeros.api_modify:
+        path: ip firewall address-list
+        data: "{{ address_list }}"
+      when:
+        - address_list is defined
+        - address_list | length > 0
+
     - name: create bgp instance
       community.routeros.api_modify:
         path: routing bgp instance
@@ -39,6 +47,14 @@
         - bgp_connection is defined
         - bgp_connection | length > 0
 
+    - name: create firewall NAT
+      community.routeros.api_modify:
+        path: ip firewall nat
+        data: "{{ firewall_nat }}"
+      when: 
+        - firewall_nat is defined
+        - firewall_nat | length > 0
+
       # delegate_to: mikrotik-3-ganjil
       # run_once: true
 
@@ -51,6 +67,11 @@
   gather_facts: false
 
   tasks:
+
+    # - name: debug
+    #   debug:
+    #     msg: "{{ bgp_network }}"
+
     - name: Deploy FRR configuration
       ansible.builtin.template:
         src: ../templates/frr.conf.j2

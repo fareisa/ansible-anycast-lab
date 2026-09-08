@@ -35,6 +35,7 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
     local.role: ibgp
     remote.address: "{{ mikrotik_3.address.ovs1int }}"
+    output.network: no
 
 ## EBGP
   - name: "{{ bgp_name }}"
@@ -57,3 +58,12 @@ dhcp_network:
   - address: 10.11.100.0/24
     gateway: 10.11.100.1
     dns-server: 10.11.100.1
+
+address_list:
+  - list: bgp-network
+    address: 10.11.100.0/24
+
+firewall_nat:
+  - chain: srcnat
+    action: masquerade
+    src-address: 10.11.100.0/24
