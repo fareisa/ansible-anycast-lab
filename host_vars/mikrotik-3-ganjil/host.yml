@@ -38,14 +38,14 @@ bgp_connection:
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
     remote.as: "{{ hostvars['lb4-1-ganjil']['asn'] }}"
-    local.role: ibgp
+    local.role: ibgp-rr
     remote.address: "{{ lb4_1.address.ovs3int }}"
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
     remote.as: "{{ hostvars['mikrotik-1-ganjil']['asn'] }}"
-    local.role: ibgp
+    local.role: ibgp-rr
     remote.address: "{{ mikrotik_1.address.ovs1int }}"
 
 
