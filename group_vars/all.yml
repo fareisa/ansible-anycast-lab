@@ -1,76 +1,76 @@
 mikrotik_1:
   address:
-    ovs1int: 10.11.0.1/30
-    ovs2int: 10.15.0.1/30
-    ovs4int: 10.11.100.1/24
+    ovs1int: 10.11.0.1
+    ovs2int: 10.15.0.1
+    ovs4int: 10.11.100.1
 
 mikrotik_2:
   address:
-    ovs1int: 10.12.0.1/30
-    ovs2int: 10.15.0.6/30
-    ovs4int: 10.12.100.1/24
+    ovs1int: 10.12.0.1
+    ovs2int: 10.15.0.6
+    ovs4int: 10.12.100.1
 
 mikrotik_3:
   address:
-    ovs1int: 10.11.0.2/30
-    ovs2int: 10.15.0.5/30
-    ovs3int: 10.11.10.1/24
-    ovs4int: 10.15.10.1/24
+    ovs1int: 10.11.0.2
+    ovs2int: 10.15.0.5
+    ovs3int: 10.11.10.1
+    ovs4int: 10.15.10.1
 
 mikrotik_4:
   address:
-    ovs1int: 10.12.0.2/30
-    ovs2int: 10.15.0.2/30
-    ovs3int: 10.12.10.1/24
-    ovs4int: 10.15.10.2/24
+    ovs1int: 10.12.0.2
+    ovs2int: 10.15.0.2
+    ovs3int: 10.12.10.1
+    ovs4int: 10.15.10.2
 
 lb4_1:
   address:
-    ovs3int: 10.11.10.2/24
-    ovs4int: 10.15.10.10/24
-    ovs5int: 10.11.20.1/24
-    ovs6int: 10.15.20.10/24
+    ovs3int: 10.11.10.2
+    ovs4int: 10.15.10.10
+    ovs5int: 10.11.20.1
+    ovs6int: 10.15.20.10
 
 lb4_2:
   address:
-    ovs3int: 10.12.10.2/24
-    ovs4int: 10.15.10.20/24
-    ovs5int: 10.12.20.1/24
-    ovs6int: 10.15.20.20/24
+    ovs3int: 10.12.10.2
+    ovs4int: 10.15.10.20
+    ovs5int: 10.12.20.1
+    ovs6int: 10.15.20.20
 
 lb4_3:
   address:
-    ovs3int: 10.12.10.3/24
-    ovs4int: 10.15.10.21/24
-    ovs5int: 10.12.20.2/24
-    ovs6int: 10.15.20.21/24
+    ovs3int: 10.12.10.3
+    ovs4int: 10.15.10.21
+    ovs5int: 10.12.20.2
+    ovs6int: 10.15.20.21
 
 lb7_1:
   address:
-    ovs5int: 10.11.20.2/24
-    ovs6int: 10.15.20.11/24
-    ovs7int: 10.11.30.1/24
+    ovs5int: 10.11.20.2
+    ovs6int: 10.15.20.11
+    ovs7int: 10.11.30.1
 
 lb7_2:
   address:
-    ovs5int: 10.12.20.3/24
-    ovs6int: 10.15.20.22/24
-    ovs7int: 10.12.30.1/24
+    ovs5int: 10.12.20.3
+    ovs6int: 10.15.20.22
+    ovs7int: 10.12.30.1
 
 lb7_3:
   address:
-    ovs5int: 10.12.20.4/24
-    ovs6int: 10.15.20.23/24
-    ovs7int: 10.12.30.2/24
+    ovs5int: 10.12.20.4
+    ovs6int: 10.15.20.23
+    ovs7int: 10.12.30.2
 
 app_1:
   address:
-    ovs7int: 10.11.30.10/24
+    ovs7int: 10.11.30.10
 
 app_2_lb:
   address:
-    ovs7int: 10.12.30.10/24
+    ovs7int: 10.12.30.10
 
 app_3_lb:
   address:
-    ovs7int: 10.12.30.11/24
+    ovs7int: 10.12.30.11

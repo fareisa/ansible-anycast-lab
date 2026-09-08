@@ -17,19 +17,19 @@ interfaces:
 ip_address:
   - interface: ether2
     comment: 'to mk2'
-    address: "{{ mikrotik_4.address.ovs1int }}"
+    address: "{{ mikrotik_4.address.ovs1int }}/30"
 
   - interface: ether3
     comment: 'to mk1'
-    address: "{{ mikrotik_4.address.ovs2int }}"
+    address: "{{ mikrotik_4.address.ovs2int }}/30"
 
   - interface: ether4
     comment: 'server-interzone'
-    address: "{{ mikrotik_4.address.ovs3int }}"
+    address: "{{ mikrotik_4.address.ovs3int }}/24"
 
   - interface: ether5
     comment: 'server-outerzone'
-    address: "{{ mikrotik_4.address.ovs4int }}"
+    address: "{{ mikrotik_4.address.ovs4int }}/24"
 
 bgp_connection:
 
@@ -37,14 +37,21 @@ bgp_connection:
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
-    remote.as: "{{ asn }}"
+    remote.as: "{{ hostvars['lb4-2-genap']['asn'] }}"
     local.role: ibgp
     remote.address: "{{ lb4_2.address.ovs3int }}"
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
-    remote.as: "{{ asn }}"
+    remote.as: "{{ hostvars['lb4-3-genap']['asn'] }}"
     local.role: ibgp
     remote.address: "{{ lb4_3.address.ovs3int }}"
 
+## EBGP
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ hostvars['lb4-1-ganjil']['asn'] }}"
+    local.role: ebgp
+    remote.address: "{{ lb4_1.address.ovs4int }}"

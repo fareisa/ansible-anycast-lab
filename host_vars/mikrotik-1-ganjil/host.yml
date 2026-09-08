@@ -16,15 +16,15 @@ interfaces:
 
 ip_address:
   - interface: ether2
-    address: "{{ mikrotik_1.address.ovs1int }}"
+    address: "{{ mikrotik_1.address.ovs1int }}/30"
     comment: 'to mk3'
 
   - interface: ether3
-    address: "{{ mikrotik_1.address.ovs2int }}"
+    address: "{{ mikrotik_1.address.ovs2int }}/30"
     comment: 'to mk4'
 
   - interface: ether5
-    address: "{{ mikrotik_1.address.ovs4int }}"
+    address: "{{ mikrotik_1.address.ovs4int }}/24"
 
 bgp_connection:
   - name: "{{ bgp_name }}"

@@ -1,3 +1,6 @@
 bgp_neighbors:
-  - address: 10.11.10.1
-    remote_as: 65011
+  - address: "{{ mikrotik_3.address.ovs3int }}"
+    remote_as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
+
+  - address: "{{ mikrotik_4.address.ovs4int }}"
+    remote_as: "{{ hostvars['mikrotik-4-genap']['asn'] }}"
