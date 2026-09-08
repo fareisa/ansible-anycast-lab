@@ -31,13 +31,14 @@
       # delegate_to: mikrotik-1-ganjil
       # run_once: true
 
-    - name: create ibgp connection
+    - name: create bgp connection
       community.routeros.api_modify:
         path: routing bgp connection
-        data: "{{ ibgp_connection }}"
+        data: "{{ bgp_connection }}"
       when: 
-        - ibgp_connection is defined
-        - ibgp_connection | length > 0
+        - bgp_connection is defined
+        - bgp_connection | length > 0
+
       # delegate_to: mikrotik-3-ganjil
       # run_once: true
 

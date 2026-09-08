@@ -31,7 +31,9 @@ ip_address:
     comment: 'server-outerzone'
     address: "{{ mikrotik_4.address.ovs4int }}"
 
-ibgp_connection:
+bgp_connection:
+
+## IBGP
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
