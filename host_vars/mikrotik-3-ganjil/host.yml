@@ -12,7 +12,7 @@ interfaces:
     comment: 'server-interzone'
 
   - default-name: 'ether5'
-    comment: 'server-outerzone'
+    comment: 'not used'
 
 ip_address:
   - interface: ether2
@@ -27,9 +27,9 @@ ip_address:
     comment: 'server-interzone'
     address: "{{ mikrotik_3.address.ovs3int }}/24"
 
-  - interface: ether5
-    comment: 'server-outerzone'
-    address: "{{ mikrotik_3.address.ovs4int }}/24"
+  # - interface: ether5
+  #   comment: 'server-outerzone'
+  #   address: "{{ mikrotik_3.address.ovs4int }}/24"
 
 bgp_connection:
 
@@ -42,6 +42,8 @@ bgp_connection:
     remote.address: "{{ lb4_1.address.ovs3int }}"
     output.network: bgp-network
     nexthop-choice: force-self
+    hold-time: 3
+    keepalive-time: 1
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -51,21 +53,29 @@ bgp_connection:
     remote.address: "{{ mikrotik_1.address.ovs1int }}"
     output.network: bgp-network
     nexthop-choice: force-self
+    hold-time: 3
+    keepalive-time: 1
 
 ## EBGP
-  - name: "{{ bgp_name }}"
-    instance: "{{ inventory_hostname }}"
-    as: "{{ asn }}"
-    remote.as: "{{ hostvars['lb4-2-genap']['asn'] }}"
-    local.role: ebgp
-    remote.address: "{{ lb4_2.address.ovs4int }}"
+  # - name: "{{ bgp_name }}"
+  #   instance: "{{ inventory_hostname }}"
+  #   as: "{{ asn }}"
+  #   remote.as: "{{ hostvars['lb4-2-genap']['asn'] }}"
+  #   local.role: ebgp
+  #   remote.address: "{{ lb4_2.address.ovs4int }}"
+  #   output.network: bgp-network
+  #   hold-time: 3
+  #   keepalive-time: 1
 
-  - name: "{{ bgp_name }}"
-    instance: "{{ inventory_hostname }}"
-    as: "{{ asn }}"
-    remote.as: "{{ hostvars['lb4-3-genap']['asn'] }}"
-    local.role: ebgp
-    remote.address: "{{ lb4_3.address.ovs4int }}"
+  # - name: "{{ bgp_name }}"
+  #   instance: "{{ inventory_hostname }}"
+  #   as: "{{ asn }}"
+  #   remote.as: "{{ hostvars['lb4-3-genap']['asn'] }}"
+  #   local.role: ebgp
+  #   remote.address: "{{ lb4_3.address.ovs4int }}"
+  #   output.network: bgp-network
+  #   hold-time: 3
+  #   keepalive-time: 1
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -73,6 +83,9 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-2-genap']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_2.address.ovs2int }}"
+    output.network: bgp-network
+    hold-time: 3
+    keepalive-time: 1
 
 address_list:
   - list: bgp-network
@@ -82,7 +95,11 @@ address_list:
     address: 10.11.0.0/30
 
   - list: bgp-network
-    address: 10.15.0.4/30
+    address: 10.15.100.10/32
 
   - list: bgp-network
-    address: 10.15.10.0/24
+    address: 10.15.0.4/30
+
+  # - list: bgp-network
+  #   address: 10.15.10.0/24
+

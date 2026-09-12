@@ -9,7 +9,7 @@ interfaces:
     comment: 'outerzone'
 
   - default-name: 'ether4'
-    comment:
+    comment: 'not used'
 
   - default-name: 'ether5'
     comment: 'client'
@@ -35,7 +35,8 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-4-genap']['asn'] }}"
     local.role: ibgp
     remote.address: "{{ mikrotik_4.address.ovs1int }}"
-    output.network: no
+    hold-time: 3
+    keepalive-time: 1
 
 ## eBGP
   - name: "{{ bgp_name }}"
@@ -44,7 +45,8 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_3.address.ovs2int }}"
-
+    hold-time: 3
+    keepalive-time: 1
 
 dhcp_server:
   - name: dhcp-genap
@@ -68,3 +70,4 @@ firewall_nat:
   - chain: srcnat
     action: masquerade
     src-address: 10.12.100.0/24
+    dst-address: 10.15.100.10/32

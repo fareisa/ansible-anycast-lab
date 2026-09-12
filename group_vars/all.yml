@@ -17,14 +17,12 @@ mikrotik_3:
     ovs1int: 10.11.0.2
     ovs2int: 10.15.0.5
     ovs3int: 10.11.10.1
-    ovs4int: 10.15.10.1
 
 mikrotik_4:
   address:
     ovs1int: 10.12.0.2
     ovs2int: 10.15.0.2
     ovs3int: 10.12.10.1
-    ovs4int: 10.15.10.2
 
 lb4_1:
   address:
