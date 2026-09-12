@@ -1,6 +1,5 @@
-nginx:
-  global:
-    port: 8080
-    directory: app-global
-  web_root: /var/www
+global:
+  port: 8080
+  directory: app-global
+web_root: /var/www
 

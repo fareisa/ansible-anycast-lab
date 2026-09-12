@@ -2,7 +2,6 @@ asn: 65011
 bgp_name: bgp-ganjil
 client_network: 10.11.100.0/24
 
-nginx:
-  zone:
-    port: 8081
-    directory: app-ganjil-1
+zone:
+  port: 8081
+  directory: app-ganjil-1

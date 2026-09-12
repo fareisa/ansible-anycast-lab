@@ -1,9 +1,9 @@
 server {
-    listen {{ nginx.global.port }} default_server;
-    listen [::]:{{ nginx.global.port }} default_server;
+    listen {{ global.port }} default_server;
+    listen [::]:{{ global.port }} default_server;
 
     server_name _;
-    root {{ nginx.web_root }}/{{ nginx.global.directory }};
+    root {{ web_root }}/{{ global.directory }};
     index index.html;
 
     location / {
@@ -12,11 +12,11 @@ server {
 }
 
 server {
-    listen {{ nginx.zone.port }};
-    listen [::]:{{ nginx.zone.port }};
+    listen {{ zone.port }};
+    listen [::]:{{ zone.port }};
 
     server_name _;
-    root {{ nginx.web_root }}/{{ nginx.zone.directory }};
+    root {{ web_root }}/{{ zone.directory }};
     index index.html;
 
     location / {

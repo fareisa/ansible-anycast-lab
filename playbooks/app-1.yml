@@ -28,27 +28,27 @@
 
     - name: Create application web roots
       ansible.builtin.file:
-        path: "{{ nginx.web_root }}/{{ item }}"
+        path: "{{ web_root }}/{{ item }}"
         state: directory
         owner: root
         group: root
         mode: "0755"
       loop:
-        - "{{ nginx.global.directory }}"
-        - "{{ nginx.zone.directory }}"
+        - "{{ global.directory }}"
+        - "{{ zone.directory }}"
 
     - name: Install the global application page
       ansible.builtin.template:
         src: ../templates/app-global.html.j2
-        dest: "{{ nginx.web_root }}/{{ nginx.global.directory }}/index.html"
+        dest: "{{ web_root }}/{{ global.directory }}/index.html"
         owner: www-data
         group: www-data
         mode: "0644"
 
     - name: Install the zone application page
       ansible.builtin.template:
-        src: ../templates/{{ nginx.zone.directory }}.html.j2
-        dest: "{{ nginx.web_root }}/{{ nginx.zone.directory }}/index.html"
+        src: ../templates/{{ zone.directory }}.html.j2
+        dest: "{{ web_root }}/{{ zone.directory }}/index.html"
         owner: www-data
         group: www-data
         mode: "0644"
