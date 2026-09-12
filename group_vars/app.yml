@@ -1,0 +1,4 @@
+multizone_app:
+  hostname: app3.example
+  backends:
+    - 10.12.30.11
