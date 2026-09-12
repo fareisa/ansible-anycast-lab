@@ -1,2 +1,9 @@
 asn: 65012
 bgp_name: bgp-genap
+client_network: 10.12.100.0/24
+lb7_target:
+  ganjil:
+    - 10.15.20.11
+  genap:
+    - 10.12.20.3
+    - 10.12.20.4

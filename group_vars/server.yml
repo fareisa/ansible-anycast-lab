@@ -1,2 +1,9 @@
 ansible_user: ubuntu
 ansible_become: true
+
+lb4_haproxy:
+  listen_address: 10.15.100.10
+  listen_ports:
+    - 80
+    - 443
+  

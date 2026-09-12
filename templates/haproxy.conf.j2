@@ -1,0 +1,38 @@
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    daemon
+    user haproxy
+    group haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+
+defaults
+    log global
+    mode tcp
+    option tcplog
+    timeout connect 5s
+    timeout client 30s
+    timeout server 30s
+
+frontend anycast_frontend
+    bind 10.15.100.10:80
+
+    acl from_ganjil src 10.11.100.0/24
+    acl from_genap src 10.12.100.0/24
+
+    use_backend lb7_ganjil if from_ganjil
+    use_backend lb7_genap if from_genap
+
+backend lb7_ganjil
+    mode tcp
+
+{% for server in lb7_target.ganjil %}
+    server lb7_ganjil_{{ loop.index }} {{ server }}:80 check
+{% endfor %}
+
+backend lb7_genap
+    mode tcp
+
+{% for server in lb7_target.genap %}
+    server lb7_genap_{{ loop.index }} {{ server }}:80 check
+{% endfor %}
