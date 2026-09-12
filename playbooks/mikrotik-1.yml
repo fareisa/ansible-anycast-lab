@@ -1,0 +1,89 @@
+- name: pre setup
+  hosts: mikrotik
+  gather_facts: false
+  tasks:
+
+    - name: set user api
+      community.routeros.command:
+        commands:
+          - /user add name="{{ user }}" password="{{ pass }}" group=full
+      changed_when: false
+
+    - name: set system identity
+      community.routeros.command:
+        commands:
+          - /system/identity/set name="{{inventory_hostname}}"
+      changed_when: false
+
+    - name: allow resolver
+      community.routeros.command:
+        commands:
+          - /ip dns set allow-remote-requests=yes
+      changed_when: false
+
+- name: configure interfaces
+  hosts: mikrotik
+  gather_facts: false
+  module_defaults:
+    group/community.routeros.api:
+      hostname: "{{ ansible_host }}"
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      handle_absent_entries: "remove"
+      handle_entries_content: "remove_as_much_as_possible"
+
+  tasks:
+
+    - name: Configure interface comments
+      community.routeros.api_modify:
+        path: interface ethernet
+        data: "{{ interfaces }}"
+        handle_absent_entries: "ignore"
+        handle_entries_content: "remove_as_much_as_possible"
+      when:
+        - interfaces is defined
+        - interfaces | length > 0
+      changed_when: false
+
+    - name: Configure
+      community.routeros.api_modify:
+        path: ip address
+        data: "{{ ip_address }}"
+      when:
+        - ip_address is defined
+        - ip_address | length > 0
+
+    - name: Create DHCP pool
+      community.routeros.api_modify:
+        path: ip pool
+        data: "{{ dhcp_pool }}"
+      when:
+        - dhcp_pool is defined
+        - dhcp_pool | length > 0
+
+    - name: Create DHCP network
+      community.routeros.api_modify:
+        path: ip dhcp-server network
+        data: "{{ dhcp_network }}"
+      when:
+        - dhcp_network is defined
+        - dhcp_network | length > 0
+
+    - name: Create DHCP server
+      community.routeros.api_modify:
+        path: ip dhcp-server
+        data: "{{ dhcp_server }}"
+      when:
+        - dhcp_server is defined
+        - dhcp_server | length > 0
+
+
+    # - name: debug
+    #   community.routeros.command:
+    #     commands:
+    #       - /ip address print
+    #   register: output
+
+    # - name: out debug
+    #   debug:
+    #     msg: "{{ output }}"

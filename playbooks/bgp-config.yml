@@ -11,16 +11,6 @@
 
   tasks:
 
-    # - name: create bgp template 
-    #   community.routeros.api_modify:
-    #     path: routing bgp template
-    #     data: "{{ bgp_template }}"
-    #   when:
-    #     - bgp_template is defined
-    #     - bgp_template | length > 0
-      # delegate_to: mikrotik-1-ganjil
-      # run_once: true
-
     - name: create bgp network address list
       community.routeros.api_modify:
         path: ip firewall address-list
@@ -36,8 +26,6 @@
       when: 
         - bgp_instance is defined
         - bgp_instance | length > 0
-      # delegate_to: mikrotik-1-ganjil
-      # run_once: true
 
     - name: create bgp connection
       community.routeros.api_modify:
@@ -55,22 +43,11 @@
         - firewall_nat is defined
         - firewall_nat | length > 0
 
-      # delegate_to: mikrotik-3-ganjil
-      # run_once: true
-
-    # - name: debug
-    #   debug:
-    #     msg: "{{ ibgp_connection }}"
-
 - name: Configure FRR
   hosts: lb4
   gather_facts: false
 
   tasks:
-
-    # - name: debug
-    #   debug:
-    #     msg: "{{ bgp_network }}"
 
     - name: Deploy FRR configuration
       ansible.builtin.template:

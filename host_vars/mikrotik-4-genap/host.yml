@@ -27,10 +27,6 @@ ip_address:
     comment: 'server-interzone'
     address: "{{ mikrotik_4.address.ovs3int }}/24"
 
-  # - interface: ether5
-  #   comment: 'server-outerzone'
-  #   address: "{{ mikrotik_4.address.ovs4int }}/24"
-
 bgp_instance:
   - name: "{{ inventory_hostname }}"
     router-id: "{{ ansible_host }}"
@@ -75,16 +71,6 @@ bgp_connection:
 
 
 ## EBGP
-  # - name: "{{ bgp_name }}"
-  #   instance: "{{ inventory_hostname }}"
-  #   as: "{{ asn }}"
-  #   remote.as: "{{ hostvars['lb4-1-ganjil']['asn'] }}"
-  #   local.role: ebgp
-  #   remote.address: "{{ lb4_1.address.ovs4int }}"
-  #   output.network: bgp-network
-  #   hold-time: 3
-  #   keepalive-time: 1
-
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
@@ -107,6 +93,3 @@ address_list:
 
   - list: bgp-network
     address: 10.15.0.0/30
-
-  # - list: bgp-network
-  #   address: 10.15.10.0/24

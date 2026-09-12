@@ -1,9 +1,0 @@
-- name: add user api
-  hosts: mikrotik
-  gather_facts: false
-  tasks:
-
-    - name: set user
-      community.routeros.command:
-        commands:
-          - /user add name=tes password=123 group=full

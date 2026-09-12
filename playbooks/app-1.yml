@@ -1,27 +1,11 @@
-- name: Install and configure Nginx application services
+- name: Nginx task install and configure app
   hosts: app
   become: true
-  gather_facts: true
+  gather_facts: false
 
-  tasks:
-    # - name: Set the Ganjil application zone
-    #   ansible.builtin.set_fact:
-    #     nginx.zone.directory: ganjil
-    #   when: inventory_hostname == 'app-1-ganjil'
-
-    # - name: Set the Genap application zone
-    #   ansible.builtin.set_fact:
-    #     nginx.zone.directory: genap
-    #   when: inventory_hostname in ['app-2-lb-genap', 'app-3-lb-genap']
-
-    # - name: Check that this host has a supported application zone
-    #   ansible.builtin.assert:
-    #     that:
-    #       - nginx.zone.directory is defined
-    #     fail_msg: 'This application host is not mapped to Ganjil or Genap.'
-
+  tasks: 
     - name: Install Nginx
-      ansible.builtin.apt:
+      apt:
         name: nginx
         state: present
         update_cache: true
