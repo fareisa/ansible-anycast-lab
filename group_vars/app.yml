@@ -1,4 +1,6 @@
-multizone_app:
-  hostname: app3.example
-  backends:
-    - 10.12.30.11
+nginx:
+  global:
+    port: 8080
+    directory: app-global
+  web_root: /var/www
+

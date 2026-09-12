@@ -1,0 +1,25 @@
+server {
+    listen {{ nginx.global.port }} default_server;
+    listen [::]:{{ nginx.global.port }} default_server;
+
+    server_name _;
+    root {{ nginx.web_root }}/{{ nginx.global.directory }};
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+server {
+    listen {{ nginx.zone.port }};
+    listen [::]:{{ nginx.zone.port }};
+
+    server_name _;
+    root {{ nginx.web_root }}/{{ nginx.zone.directory }};
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
