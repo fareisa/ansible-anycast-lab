@@ -37,6 +37,7 @@ bgp_connection:
     remote.address: "{{ mikrotik_4.address.ovs1int }}"
     hold-time: 3
     keepalive-time: 1
+    output.network: bgp-network
 
 ## eBGP
   - name: "{{ bgp_name }}"
@@ -47,6 +48,7 @@ bgp_connection:
     remote.address: "{{ mikrotik_3.address.ovs2int }}"
     hold-time: 3
     keepalive-time: 1
+    output.network: bgp-network
 
 dhcp_server:
   - name: dhcp-genap
@@ -71,3 +73,4 @@ firewall_nat:
     action: masquerade
     src-address: 10.12.100.0/24
     dst-address: 10.15.100.10/32
+    disabled: yes

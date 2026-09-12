@@ -1,0 +1,16 @@
+- name: task for haproxy
+  hosts: lb4
+  become: true
+  tasks:
+  
+    - name: install haproxy
+      apt:
+        name: haproxy
+        state: present
+        update_cache: true
+
+    - name: makesure haproxy is enabled
+      service:
+        name: haproxy
+        state: started
+        enabled: true

@@ -2,7 +2,7 @@
   hosts: lb4
   become: true
   vars:
-    frr_version: "frr-stable"
+    frr_version: "frr-10.7"
 
   tasks:
     - name: Ensure keyrings directory exists
