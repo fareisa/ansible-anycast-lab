@@ -11,7 +11,7 @@
 
 - name: Install the global application page
   template:
-    src: templates/app-global.html.j2
+    src: "{{ global.directory }}.html.j2"
     dest: "{{ web_root }}/{{ global.directory }}/index.html"
     owner: www-data
     group: www-data
@@ -19,7 +19,7 @@
 
 - name: Install the zone application page
   template:
-    src: templates/{{ zone.directory }}.html.j2
+    src: "{{ zone.directory }}.html.j2"
     dest: "{{ web_root }}/{{ zone.directory }}/index.html"
     owner: www-data
     group: www-data
@@ -27,7 +27,7 @@
 
 - name: Install the application virtual host configuration
   template:
-    src: templates/app-nginx.conf.j2
+    src: app-nginx.conf.j2
     dest: /etc/nginx/sites-available/app-services.conf
     owner: root
     group: root

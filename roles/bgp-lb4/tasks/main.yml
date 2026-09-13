@@ -1,12 +1,12 @@
-- name: copy template config
+- name: copy template daemon config
   template:
-    src: templates/frr-daemons.j2
+    src: frr-daemons.j2
     dest: /etc/frr/daemons
   notify: Restart FRR
 
-- name: Deploy FRR configuration
+- name: Deploy FRR configuration for bgp
   ansible.builtin.template:
-    src: templates/frr.conf.j2
+    src: frr.conf.j2
     dest: /etc/frr/frr.conf
     owner: frr
     group: frr

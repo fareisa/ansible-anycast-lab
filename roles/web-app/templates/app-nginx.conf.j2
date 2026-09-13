@@ -1,0 +1,25 @@
+server {
+    listen {{ global.port }} default_server;
+    listen [::]:{{ global.port }} default_server;
+
+    server_name _;
+    root {{ web_root }}/{{ global.directory }};
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+server {
+    listen {{ zone.port }};
+    listen [::]:{{ zone.port }};
+
+    server_name _;
+    root {{ web_root }}/{{ zone.directory }};
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
