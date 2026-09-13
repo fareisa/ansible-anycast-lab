@@ -16,3 +16,6 @@ zone:
 bgp_neighbors:
   - address: "{{ mikrotik_3.address.ovs3int }}"
     remote_as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
+
+bgp_expected_neighbors:
+  - "{{ mikrotik_3.address.ovs3int }}"

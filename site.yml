@@ -13,15 +13,21 @@
     - ipaddress-mikrotik
     - dhcp-mikrotik
     - bgp-mikrotik
+  tags:
+    - mikrotik
 
 - name: lb4 config
   hosts: lb4
   roles:
     - presetup-lb4
     - bgp-lb4
+  tags: 
+    - lb4    
 
 - name: app config
   hosts: app
   roles: 
     - presetup-app
     - web-app
+  tags:
+    - app

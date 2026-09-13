@@ -12,3 +12,33 @@
     group: frr
     mode: "0640"
   notify: Restart FRR
+
+- name: Verify FRR BGP
+  ansible.builtin.command:
+    cmd: vtysh -c "show bgp summary"
+  register: bgp_summary
+  changed_when: false
+
+- name: Verify FRR BGP summary
+  ansible.builtin.command:
+    cmd: vtysh -c "show bgp summary json"
+  register: bgp_summary
+  changed_when: false
+  failed_when: bgp_summary.rc != 0
+
+- name: Parse BGP summary
+  set_fact:
+    bgp_summary_json: "{{ bgp_summary.stdout | from_json }}"
+
+- name: Validate BGP neighbors
+  ansible.builtin.assert:
+    that:
+      - bgp_summary_json.ipv4Unicast.peers[item].state == "Established"
+    fail_msg: "BGP neighbor {{ item }} is not Established"
+    success_msg: "BGP neighbor {{ item }} is Established"
+  loop: "{{ bgp_expected_neighbors }}"
+
+# - name: Show BGP summary
+#   ansible.builtin.debug:
+#     var: bgp_summary.stdout | from_json
+
