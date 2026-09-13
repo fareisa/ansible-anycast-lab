@@ -1,0 +1,27 @@
+- name: mikrotik config
+  hosts: mikrotik
+  gather_facts: false
+  module_defaults:
+    group/community.routeros.api:
+      hostname: "{{ ansible_host }}"
+      username: "{{ user }}"
+      password: "{{ pass }}"
+      handle_absent_entries: "remove"
+      handle_entries_content: "remove_as_much_as_possible"
+  roles:
+    - presetup-mikrotik
+    - ipaddress-mikrotik
+    - dhcp-mikrotik
+    - bgp-mikrotik
+
+- name: lb4 config
+  hosts: lb4
+  roles:
+    - presetup-lb4
+    - bgp-lb4
+
+- name: app config
+  hosts: app
+  roles: 
+    - presetup-app
+    - web-app
