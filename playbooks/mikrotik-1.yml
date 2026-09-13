@@ -45,7 +45,7 @@
         - interfaces | length > 0
       changed_when: false
 
-    - name: Configure
+    - name: Configure ip address
       community.routeros.api_modify:
         path: ip address
         data: "{{ ip_address }}"

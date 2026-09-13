@@ -11,7 +11,7 @@
         update_cache: true
 
     - name: Create application web roots
-      ansible.builtin.file:
+      file:
         path: "{{ web_root }}/{{ item }}"
         state: directory
         owner: root
@@ -22,7 +22,7 @@
         - "{{ zone.directory }}"
 
     - name: Install the global application page
-      ansible.builtin.template:
+      template:
         src: ../templates/app-global.html.j2
         dest: "{{ web_root }}/{{ global.directory }}/index.html"
         owner: www-data
@@ -30,7 +30,7 @@
         mode: "0644"
 
     - name: Install the zone application page
-      ansible.builtin.template:
+      template:
         src: ../templates/{{ zone.directory }}.html.j2
         dest: "{{ web_root }}/{{ zone.directory }}/index.html"
         owner: www-data
@@ -38,7 +38,7 @@
         mode: "0644"
 
     - name: Install the application virtual host configuration
-      ansible.builtin.template:
+      template:
         src: ../templates/app-nginx.conf.j2
         dest: /etc/nginx/sites-available/app-services.conf
         owner: root
@@ -47,30 +47,30 @@
       notify: Reload Nginx
 
     - name: Enable the application virtual hosts
-      ansible.builtin.file:
+      file:
         src: /etc/nginx/sites-available/app-services.conf
         dest: /etc/nginx/sites-enabled/app-services.conf
         state: link
       notify: Reload Nginx
 
     - name: Disable the default Nginx virtual host
-      ansible.builtin.file:
+      file:
         path: /etc/nginx/sites-enabled/default
         state: absent
       notify: Reload Nginx
 
     - name: Validate Nginx configuration
-      ansible.builtin.command: nginx -t
+      command: nginx -t
       changed_when: false
 
     - name: Enable and start Nginx
-      ansible.builtin.service:
+      service:
         name: nginx
         state: started
         enabled: true
 
   handlers:
     - name: Reload Nginx
-      ansible.builtin.service:
+      service:
         name: nginx
         state: reloaded

@@ -1,0 +1,53 @@
+- name: Ensure keyrings directory exists
+  ansible.builtin.file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download FRR GPG key
+  ansible.builtin.get_url:
+    url: https://deb.frrouting.org/frr/keys.gpg
+    dest: /usr/share/keyrings/frrouting.gpg
+    mode: '0644'
+
+- name: Add FRR DEB822 repository
+  ansible.builtin.deb822_repository:
+    name: frr
+    types: deb
+    uris: https://deb.frrouting.org/frr
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: "{{ frr_version }}"
+    signed_by: /usr/share/keyrings/frrouting.gpg
+    state: present
+
+- name: Update APT cache and install FRR packages
+  ansible.builtin.apt:
+    name:
+      - frr
+      - frr-pythontools
+    state: present
+    update_cache: true
+
+- name: Create loopback interface
+  command:
+    cmd: ip link add anycast0 type dummy
+  register: anycast_interface
+  failed_when:
+    - anycast_interface.rc != 0
+    - "'File exists' not in anycast_interface.stderr"
+  changed_when: anycast_interface.rc == 0
+
+- name: Bring anycast interface up
+  command:
+    cmd: ip link set anycast0 up
+  changed_when: false
+
+- name: Configure Anycast VIP
+  command:
+    cmd: "ip addr replace {{ anycast_ip }}/32 dev anycast0"
+  changed_when: false
+
+- name: Add Anycast route
+  command:
+    cmd: "ip route replace {{ anycast_ip }}/32 dev anycast0"
+  changed_when: false

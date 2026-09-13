@@ -1,0 +1,18 @@
+- name: Configure interface comments
+  community.routeros.api_modify:
+    path: interface ethernet
+    data: "{{ interfaces }}"
+    handle_absent_entries: "ignore"
+    handle_entries_content: "remove_as_much_as_possible"
+  when:
+    - interfaces is defined
+    - interfaces | length > 0
+  changed_when: false
+
+- name: Configure ip address
+  community.routeros.api_modify:
+    path: ip address
+    data: "{{ ip_address }}"
+  when:
+    - ip_address is defined
+    - ip_address | length > 0

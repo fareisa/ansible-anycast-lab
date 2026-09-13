@@ -35,13 +35,13 @@
         - bgp_connection is defined
         - bgp_connection | length > 0
 
-    - name: create firewall NAT
-      community.routeros.api_modify:
-        path: ip firewall nat
-        data: "{{ firewall_nat }}"
-      when: 
-        - firewall_nat is defined
-        - firewall_nat | length > 0
+    # - name: create firewall NAT
+    #   community.routeros.api_modify:
+    #     path: ip firewall nat
+    #     data: "{{ firewall_nat }}"
+    #   when: 
+    #     - firewall_nat is defined
+    #     - firewall_nat | length > 0
 
 - name: Configure FRR
   hosts: lb4

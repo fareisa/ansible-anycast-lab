@@ -1,5 +1,6 @@
 ansible_user: ubuntu
 
+### refer to repo source
 frr_version: "frr-10.7"
 
 lb4_haproxy:

@@ -72,7 +72,7 @@ address_list:
     address: 10.11.0.0/30
 
   - list: bgp-network
-    address: 10.15.100.10/32
+    address: "{{ anycast_ip }}"
 
   - list: bgp-network
     address: 10.15.0.4/30

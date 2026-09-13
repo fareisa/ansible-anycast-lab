@@ -1,0 +1,20 @@
+- name: create bgp network address list
+  community.routeros.api_modify:
+    path: ip firewall address-list
+    data: "{{ address_list }}"
+
+- name: create bgp instance
+  community.routeros.api_modify:
+    path: routing bgp instance
+    data: "{{ bgp_instance }}"
+  when: 
+    - bgp_instance is defined
+    - bgp_instance | length > 0
+
+- name: create bgp connection
+  community.routeros.api_modify:
+    path: routing bgp connection
+    data: "{{ bgp_connection }}"
+  when: 
+    - bgp_connection is defined
+    - bgp_connection | length > 0

@@ -1,0 +1,14 @@
+- name: copy template config
+  template:
+    src: templates/frr-daemons.j2
+    dest: /etc/frr/daemons
+  notify: Restart FRR
+
+- name: Deploy FRR configuration
+  ansible.builtin.template:
+    src: templates/frr.conf.j2
+    dest: /etc/frr/frr.conf
+    owner: frr
+    group: frr
+    mode: "0640"
+  notify: Restart FRR

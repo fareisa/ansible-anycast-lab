@@ -1,0 +1,23 @@
+- name: Create DHCP pool
+  community.routeros.api_modify:
+    path: ip pool
+    data: "{{ dhcp_pool }}"
+  when:
+    - dhcp_pool is defined
+    - dhcp_pool | length > 0
+
+- name: Create DHCP network
+  community.routeros.api_modify:
+    path: ip dhcp-server network
+    data: "{{ dhcp_network }}"
+  when:
+    - dhcp_network is defined
+    - dhcp_network | length > 0
+
+- name: Create DHCP server
+  community.routeros.api_modify:
+    path: ip dhcp-server
+    data: "{{ dhcp_server }}"
+  when:
+    - dhcp_server is defined
+    - dhcp_server | length > 0
