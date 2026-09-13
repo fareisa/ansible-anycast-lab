@@ -35,8 +35,8 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
     local.role: ibgp
     remote.address: "{{ mikrotik_3.address.ovs1int }}"
-    hold-time: 3
-    keepalive-time: 1
+    hold-time: 3s
+    keepalive-time: 1s
     output.network: bgp-network
 
 ## EBGP
@@ -46,8 +46,8 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-4-genap']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_4.address.ovs2int }}"
-    hold-time: 3
-    keepalive-time: 1
+    hold-time: 3s
+    keepalive-time: 1s
     output.network: bgp-network
 
 dhcp_server:

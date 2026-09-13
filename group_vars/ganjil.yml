@@ -11,22 +11,6 @@ zone:
   port: 8081
   directory: app-ganjil-1
 
-### mikrotik
-address_list:
-## advertised network
-  - list: bgp-network
-    address: 10.11.10.0/24
-
-  - list: bgp-network
-    address: 10.11.0.0/30
-
-  - list: bgp-network
-    address: 10.15.100.10/32
-
-  - list: bgp-network
-    address: 10.15.0.4/30
-##
-
 ### server
 ## bgp neighbors
 bgp_neighbors:

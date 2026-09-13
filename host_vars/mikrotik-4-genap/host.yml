@@ -44,8 +44,8 @@ bgp_connection:
     remote.address: "{{ lb4_2.address.ovs3int }}"
     output.network: bgp-network
     nexthop-choice: force-self
-    hold-time: 3
-    keepalive-time: 1
+    hold-time: 3s
+    keepalive-time: 1s
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -55,8 +55,8 @@ bgp_connection:
     remote.address: "{{ lb4_3.address.ovs3int }}"
     output.network: bgp-network
     nexthop-choice: force-self
-    hold-time: 3
-    keepalive-time: 1
+    hold-time: 3s
+    keepalive-time: 1s
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -66,8 +66,8 @@ bgp_connection:
     remote.address: "{{ mikrotik_2.address.ovs1int }}"
     output.network: bgp-network
     nexthop-choice: force-self
-    hold-time: 3
-    keepalive-time: 1
+    hold-time: 3s
+    keepalive-time: 1s
 
 
 ## EBGP
@@ -78,5 +78,20 @@ bgp_connection:
     local.role: ebgp
     remote.address: "{{ mikrotik_1.address.ovs2int }}"
     output.network: bgp-network
-    hold-time: 3
-    keepalive-time: 1
+    hold-time: 3s
+    keepalive-time: 1s
+
+address_list:
+## advertised network
+  - list: bgp-network
+    address: 10.12.10.0/24
+
+  - list: bgp-network
+    address: 10.12.0.0/30
+
+  - list: bgp-network
+    address: 10.15.100.10/32
+
+  - list: bgp-network
+    address: 10.15.0.0/30
+##
