@@ -80,16 +80,3 @@ bgp_connection:
     output.network: bgp-network
     hold-time: 3
     keepalive-time: 1
-
-address_list:
-  - list: bgp-network
-    address: 10.12.10.0/24
-
-  - list: bgp-network
-    address: 10.12.0.0/30
-
-  - list: bgp-network
-    address: 10.15.100.10/32
-
-  - list: bgp-network
-    address: 10.15.0.0/30

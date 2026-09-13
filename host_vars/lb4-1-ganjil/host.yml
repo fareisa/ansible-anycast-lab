@@ -1,3 +1,0 @@
-bgp_neighbors:
-  - address: "{{ mikrotik_3.address.ovs3int }}"
-    remote_as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
