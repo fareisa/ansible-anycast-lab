@@ -19,19 +19,19 @@ global
 
 defaults
         log     global
-        mode    tcp
-        option  tcplog
+        mode    http
+        option  httplog
         # option  dontlognull
         timeout connect 5s
         timeout client  30s
         timeout server  30s
-        # errorfile 400 /etc/haproxy/errors/400.http
-        # errorfile 403 /etc/haproxy/errors/403.http
-        # errorfile 408 /etc/haproxy/errors/408.http
-        # errorfile 500 /etc/haproxy/errors/500.http
-        # errorfile 502 /etc/haproxy/errors/502.http
-        # errorfile 503 /etc/haproxy/errors/503.http
-        # errorfile 504 /etc/haproxy/errors/504.http
+        errorfile 400 /etc/haproxy/errors/400.http
+        errorfile 403 /etc/haproxy/errors/403.http
+        errorfile 408 /etc/haproxy/errors/408.http
+        errorfile 500 /etc/haproxy/errors/500.http
+        errorfile 502 /etc/haproxy/errors/502.http
+        errorfile 503 /etc/haproxy/errors/503.http
+        errorfile 504 /etc/haproxy/errors/504.http
 
 frontend stats
   mode http
@@ -42,28 +42,21 @@ frontend stats
   stats show-modules
 
 frontend http_in
-    bind {{ anycast_ip }}:80
+    bind *:{{ haproxy.port_in }}
 
-    acl client_ganjil src "{{ hostvars['lb4-1-ganjil']['client_network'] }}"
-    acl client_genap  src "{{ hostvars['lb4-2-genap']['client_network'] }}"
-
-    use_backend lb7_ganjil if client_ganjil
-    use_backend lb7_genap if client_genap
-
-backend lb7_ganjil
-{% for server in lb4_haproxy_ganjil.lb7_ganjil %}
-    server lb7-{{ server }} {{ server }}:80 check
+{% for vhost in haproxy_vhosts %}
+    acl host_{{ vhost.backend }} hdr(host) -i {{ vhost.hostname }}
 {% endfor %}
 
-{% for server in lb4_haproxy_ganjil.lb7_genap %}
-    server lb7-{{ server }} {{ server }}:80 check backup
+{% for vhost in haproxy_vhosts %}
+    use_backend {{ vhost.backend }} if host_{{ vhost.backend }}
 {% endfor %}
 
-backend lb7_genap
-{% for server in lb4_haproxy_genap.lb7_ganjil %}
-    server lb7-{{ server }} {{ server }}:80 check
+{% for vhost in haproxy_vhosts %}
+
+backend {{ vhost.backend }}
+{% for server in vhost.servers %}
+    server {{ vhost.backend }}-{{ loop.index }} {{ server }}
 {% endfor %}
 
-{% for server in lb4_haproxy_genap.lb7_genap %}
-    server lb7-{{ server }} {{ server }}:80 check backup
 {% endfor %}

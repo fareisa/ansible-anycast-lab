@@ -19,3 +19,18 @@ bgp_neighbors:
 
 bgp_expected_neighbors:
   - "{{ mikrotik_4.address.ovs3int }}"
+
+### haproxy lb7 setup
+haproxy_vhosts:
+  - hostname: app-genap.wahaha.lab
+    backend: app-genap
+    servers:
+      - "{{ app_2_lb.address.ovs7int }}:{{ zone.port }} check"
+      - "{{ app_3_lb.address.ovs7int }}:{{ zone.port }} check"
+
+  - hostname: app-global.wahaha.lab
+    backend: app-global
+    servers:
+      - "{{ app_1.address.ovs7int }}:{{ global.port }} check backup"
+      - "{{ app_2_lb.address.ovs7int }}:{{ global.port }} check"
+      - "{{ app_3_lb.address.ovs7int }}:{{ global.port }} check"

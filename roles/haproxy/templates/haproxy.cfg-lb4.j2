@@ -42,7 +42,7 @@ frontend stats
   stats show-modules
 
 frontend http_in
-    bind {{ anycast_ip }}:80
+    bind {{ anycast_ip }}:{{ haproxy.port_in }}
 
     acl client_ganjil src "{{ hostvars['lb4-1-ganjil']['client_network'] }}"
     acl client_genap  src "{{ hostvars['lb4-2-genap']['client_network'] }}"
@@ -52,18 +52,18 @@ frontend http_in
 
 backend lb7_ganjil
 {% for server in lb4_haproxy_ganjil.lb7_ganjil %}
-    server lb7-{{ server }} {{ server }}:80 check
+    server lb7-{{ loop.index }} {{ server }}
 {% endfor %}
 
 {% for server in lb4_haproxy_ganjil.lb7_genap %}
-    server lb7-{{ server }} {{ server }}:80 check backup
+    server lb7-back-{{ loop.index }} {{ server }}
 {% endfor %}
 
 backend lb7_genap
-{% for server in lb4_haproxy_genap.lb7_ganjil %}
-    server lb7-{{ server }} {{ server }}:80 check
+{% for server in lb4_haproxy_genap.lb7_genap %}
+    server lb7-{{ loop.index }} {{ server }}
 {% endfor %}
 
-{% for server in lb4_haproxy_genap.lb7_genap %}
-    server lb7-{{ server }} {{ server }}:80 check backup
+{% for server in lb4_haproxy_genap.lb7_ganjil %}
+    server lb7-back-{{ loop.index }} {{ server }}
 {% endfor %}

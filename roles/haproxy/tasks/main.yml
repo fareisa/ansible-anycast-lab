@@ -35,7 +35,7 @@
 
 - name: deploy configuration 
   template:
-    src: "{{ haproxy_template }}"
+    src: "{{ haproxy.template }}"
     dest: /etc/haproxy/haproxy.cfg
     owner: root
     group: root
