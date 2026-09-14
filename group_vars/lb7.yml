@@ -1,0 +1,1 @@
+haproxy_template: haproxy.cfg-lb7.j2

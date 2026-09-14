@@ -20,10 +20,17 @@
   hosts: lb4
   roles:
     - presetup-lb4
-    - bgp-lb4
-    - haproxy-lb4
+    - frr
+    - haproxy
   tags: 
-    - lb4    
+    - lb4
+
+- name: lb7 config
+  hosts: lb7
+  roles:
+    - haproxy
+  tags: 
+    - lb7    
 
 - name: app config
   hosts: app

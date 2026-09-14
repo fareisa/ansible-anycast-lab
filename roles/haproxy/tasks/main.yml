@@ -1,0 +1,44 @@
+- name: Ensure keyrings directory exists
+  ansible.builtin.file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download Haproxy keyrings
+  get_url:
+    url: https://pks.haproxy.com/linux/community/RPM-GPG-KEY-HAProxy
+    dest: /usr/share/keyrings/HAPROXY-key-community.asc
+    mode: '0644'
+
+- name: Add haproxy repo
+  deb822_repository:
+    name: haproxy
+    types: deb
+    uris: https://www.haproxy.com/download/haproxy/performance/ubuntu/ha34
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    signed_by: /usr/share/keyrings/HAPROXY-key-community.asc
+    state: present
+
+- name: Update APT cache and install package
+  ansible.builtin.apt:
+    name:
+      - haproxy-awslc
+    state: present
+    update_cache: true
+
+- name: makesure haproxy is start and enabled 
+  service:
+    name: haproxy
+    state: started
+    enabled: true
+
+- name: deploy configuration 
+  template:
+    src: "{{ haproxy_template }}"
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: "0644"
+    validate: "/usr/sbin/haproxy -c -f %s"
+  notify: restart haproxy
