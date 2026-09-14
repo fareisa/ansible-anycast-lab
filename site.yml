@@ -35,7 +35,6 @@
 - name: app config
   hosts: app
   roles: 
-    - presetup-app
     - web-app
   tags:
     - app
