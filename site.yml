@@ -21,6 +21,7 @@
   roles:
     - presetup-lb4
     - bgp-lb4
+    - haproxy-lb4
   tags: 
     - lb4    
 

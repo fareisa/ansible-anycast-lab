@@ -4,9 +4,16 @@ ansible_become: true
 ### refer to repo source
 frr_version: "frr-10.7"
 
-lb4_haproxy:
-  listen_address: 10.15.100.10
-  listen_ports:
-    - 80
-    - 443
-  
+lb4_haproxy_genap:
+  lb7_ganjil:
+    - "{{ lb7_1.address.ovs6int }}"
+  lb7_genap:
+    - "{{ lb7_2.address.ovs5int }}"
+    - "{{ lb7_3.address.ovs5int }}"
+
+lb4_haproxy_ganjil:
+  lb7_ganjil:
+    - "{{ lb7_1.address.ovs5int }}"
+  lb7_genap:
+    - "{{ lb7_2.address.ovs6int }}"
+    - "{{ lb7_3.address.ovs6int }}"
