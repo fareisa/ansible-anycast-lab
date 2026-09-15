@@ -4,25 +4,6 @@ ansible_become: true
 ### refer to repo source
 frr_version: "frr-10.7"
 
-### haproxy setup
-lb4_haproxy_genap:
-## primary
-  lb7_genap:
-    - "{{ lb7_2.address.ovs5int }}:{{ hostvars['lb7-2-genap']['haproxy']['port_in'] }} check"
-    - "{{ lb7_3.address.ovs5int }}:{{ hostvars['lb7-3-genap']['haproxy']['port_in'] }} check"
-## backup
-  lb7_ganjil:
-    - "{{ lb7_1.address.ovs6int }}:{{ hostvars['lb7-1-ganjil']['haproxy']['port_in'] }} check backup"
-
-lb4_haproxy_ganjil:
-## primary
-  lb7_ganjil:
-    - "{{ lb7_1.address.ovs5int }}:{{ hostvars['lb7-1-ganjil']['haproxy']['port_in'] }} check"
-## backup
-  lb7_genap:
-    - "{{ lb7_2.address.ovs6int }}:{{ hostvars['lb7-2-genap']['haproxy']['port_in'] }} check backup"
-    - "{{ lb7_3.address.ovs6int }}:{{ hostvars['lb7-3-genap']['haproxy']['port_in'] }} check backup"
-
 ### global app endpoint
 global:
   port: 8080
