@@ -16,21 +16,21 @@
   tags:
     - mikrotik
 
-- name: lb4 config
-  hosts: lb4
-  roles:
-    - presetup-lb4
-    - frr
-    - haproxy
-  tags: 
-    - lb4
-
 - name: lb7 config
   hosts: lb7
   roles:
+    - presetup-lb7
+    - frr
     - haproxy
   tags: 
-    - lb7    
+    - lb7
+
+- name: lb4 config
+  hosts: lb4
+  roles:
+    - haproxy
+  tags: 
+    - lb4    
 
 - name: app config
   hosts: app

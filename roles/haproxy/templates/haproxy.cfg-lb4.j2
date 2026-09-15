@@ -38,32 +38,20 @@ frontend stats
   bind :8404
   stats enable
   stats refresh 5s
-  stats uri /stats
+  stats uri /
   stats show-modules
 
-frontend http_in
-    bind {{ anycast_ip }}:{{ haproxy.port_in }}
-
-    acl client_ganjil src "{{ hostvars['lb4-1-ganjil']['client_network'] }}"
-    acl client_genap  src "{{ hostvars['lb4-2-genap']['client_network'] }}"
-
-    use_backend lb7_ganjil if client_ganjil
-    use_backend lb7_genap if client_genap
-
-backend lb7_ganjil
-{% for server in lb4_haproxy_ganjil.lb7_ganjil %}
-    server lb7-{{ loop.index }} {{ server }}
+{% for vhost in lb4_haproxy_vhosts %}
+frontend {{ vhost.frontend }}
+    bind *:{{ vhost.frontend_port }}
+    use_backend {{ vhost.backend }}
 {% endfor %}
 
-{% for server in lb4_haproxy_ganjil.lb7_genap %}
-    server lb7-back-{{ loop.index }} {{ server }}
+{% for vhost in lb4_haproxy_vhosts  %}
+backend {{ vhost.backend }}
+
+{% for server in vhost.servers %}
+    server {{ vhost.backend }}-{{ loop.index }} {{ server }}
 {% endfor %}
 
-backend lb7_genap
-{% for server in lb4_haproxy_genap.lb7_genap %}
-    server lb7-{{ loop.index }} {{ server }}
-{% endfor %}
-
-{% for server in lb4_haproxy_genap.lb7_ganjil %}
-    server lb7-back-{{ loop.index }} {{ server }}
 {% endfor %}

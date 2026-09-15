@@ -38,21 +38,25 @@ frontend stats
   bind :8404
   stats enable
   stats refresh 5s
-  stats uri /stats
+  stats uri /
   stats show-modules
 
 frontend http_in
-    bind *:{{ haproxy.port_in }}
+    bind {{ anycast_ip }}:{{ haproxy.port_in }}
 
-{% for vhost in haproxy_vhosts %}
-    acl host_{{ vhost.backend }} hdr(host) -i {{ vhost.hostname }}
+{% for rule in lb7_haproxy_acl.hostname %}
+    acl {{ rule.acl_name }} hdr(host) -i {{ rule.hostname }}
 {% endfor %}
 
-{% for vhost in haproxy_vhosts %}
-    use_backend {{ vhost.backend }} if host_{{ vhost.backend }}
+{% for rule in lb7_haproxy_acl.network %}
+    acl {{ rule.acl_name }} src "{{ rule.network }}"
 {% endfor %}
 
-{% for vhost in haproxy_vhosts %}
+{% for vhost in lb7_haproxy_vhosts %}
+    use_backend {{ vhost.backend }} if {{ vhost.rule }}
+{% endfor %}
+
+{% for vhost in lb7_haproxy_vhosts %}
 
 backend {{ vhost.backend }}
 {% for server in vhost.servers %}

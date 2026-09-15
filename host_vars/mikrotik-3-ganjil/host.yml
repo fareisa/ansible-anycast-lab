@@ -33,9 +33,9 @@ bgp_connection:
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
-    remote.as: "{{ hostvars['lb4-1-ganjil']['asn'] }}"
+    remote.as: "{{ hostvars['lb7-1-ganjil']['asn'] }}"
     local.role: ibgp-rr
-    remote.address: "{{ lb4_1.address.ovs3int }}"
+    remote.address: "{{ lb7_1.address.ovs3int }}"
     output.network: bgp-network
     nexthop-choice: force-self
     hold-time: 3s

@@ -21,16 +21,43 @@ bgp_expected_neighbors:
   - "{{ mikrotik_4.address.ovs3int }}"
 
 ### haproxy lb7 setup
-haproxy_vhosts:
-  - hostname: app-genap.wahaha.lab
-    backend: app-genap
-    servers:
-      - "{{ app_2_lb.address.ovs7int }}:{{ zone.port }} check"
-      - "{{ app_3_lb.address.ovs7int }}:{{ zone.port }} check"
+lb7_haproxy_acl:
+  hostname:
+    - acl_name: host_app-genap
+      hostname: app-genap.wahaha.lab
 
-  - hostname: app-global.wahaha.lab
-    backend: app-global
+    - acl_name: host_app-global
+      hostname: app-global.wahaha.lab
+
+  network:
+    - acl_name: net_genap
+      network: "{{ client_network }}"
+
+lb7_haproxy_vhosts:
+  - backend: app-genap
     servers:
-      - "{{ app_1.address.ovs7int }}:{{ global.port }} check backup"
+      - "{{ lb4_2.address.ovs5int }}:{{ zone.port }} check"
+      - "{{ lb4_3.address.ovs5int }}:{{ zone.port }} check"
+    rule: host_app-genap net_genap
+
+  - backend: app-global
+    servers:
+      - "{{ lb4_1.address.ovs6int }}:{{ global.port }} check backup"
+      - "{{ lb4_2.address.ovs5int }}:{{ global.port }} check"
+      - "{{ lb4_3.address.ovs5int }}:{{ global.port }} check"
+    rule: host_app-global
+
+lb4_haproxy_vhosts: 
+  - backend: global-app
+    frontend: global-ingress
+    frontend_port: "{{ global.port }}" 
+    servers:
       - "{{ app_2_lb.address.ovs7int }}:{{ global.port }} check"
       - "{{ app_3_lb.address.ovs7int }}:{{ global.port }} check"
+
+  - backend: genap-app
+    frontend: genap-ingress
+    frontend_port: "{{ zone.port }}" 
+    servers: 
+      - "{{ app_2_lb.address.ovs7int }}:{{ zone.port }} check"
+      - "{{ app_3_lb.address.ovs7int }}:{{ zone.port }} check"      

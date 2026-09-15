@@ -1,5 +1,5 @@
 - name: restart haproxy
   service:
     name: haproxy
-    state: reloaded
+    state: restarted
     

@@ -49,30 +49,62 @@
     mode: "0640"
   notify: Restart FRR
 
-- name: Verify FRR BGP
-  ansible.builtin.command:
-    cmd: vtysh -c "show bgp summary"
-  register: bgp_summary
-  changed_when: false
+- block:
+    - name: Verify FRR BGP
+      ansible.builtin.command:
+        cmd: vtysh -c "show bgp summary"
+      register: bgp_summary
+      changed_when: false
 
-- name: Verify FRR BGP summary
-  ansible.builtin.command:
-    cmd: vtysh -c "show bgp summary json"
-  register: bgp_summary
-  changed_when: false
-  failed_when: bgp_summary.rc != 0
+    - name: Verify FRR BGP summary
+      ansible.builtin.command:
+        cmd: vtysh -c "show bgp summary json"
+      register: bgp_summary
+      changed_when: false
+      failed_when: bgp_summary.rc != 0
 
-- name: Parse BGP summary
-  set_fact:
-    bgp_summary_json: "{{ bgp_summary.stdout | from_json }}"
+    - name: Parse BGP summary
+      ansible.builtin.set_fact:
+        bgp_summary_json: "{{ bgp_summary.stdout | from_json }}"
 
-- name: Validate BGP neighbors
-  ansible.builtin.assert:
-    that:
-      - bgp_summary_json.ipv4Unicast.peers[item].state == "Established"
-    fail_msg: "BGP neighbor {{ item }} is not Established"
-    success_msg: "BGP neighbor {{ item }} is Established"
-  loop: "{{ bgp_expected_neighbors }}"
+    - name: Validate BGP neighbors
+      ansible.builtin.assert:
+        that:
+          - bgp_summary_json.ipv4Unicast.peers[item].state == "Established"
+        fail_msg: "BGP neighbor {{ item }} is not Established"
+        success_msg: "BGP neighbor {{ item }} is Established"
+      loop: "{{ bgp_expected_neighbors }}"
+
+  rescue:
+    - name: Restart FRR service after failed BGP check
+      ansible.builtin.command: /bin/true
+      notify: Restart FRR
+
+    - name: Flush FRR handler
+      ansible.builtin.meta: flush_handlers
+
+    - name: Wait 5 seconds for FRR to restart
+      ansible.builtin.pause:
+        seconds: 5
+
+    - name: Re-check FRR BGP summary
+      ansible.builtin.command:
+        cmd: vtysh -c "show bgp summary json"
+      register: bgp_summary
+      changed_when: false
+      failed_when: bgp_summary.rc != 0
+
+    - name: Parse BGP summary after restart
+      ansible.builtin.set_fact:
+        bgp_summary_json: "{{ bgp_summary.stdout | from_json }}"
+
+    - name: Validate BGP neighbors after restart
+      ansible.builtin.assert:
+        that:
+          - bgp_summary_json.ipv4Unicast.peers[item].state == "Established"
+        fail_msg: "BGP neighbor {{ item }} is not Established after restart"
+        success_msg: "BGP neighbor {{ item }} is Established after restart"
+      loop: "{{ bgp_expected_neighbors }}"
 
 # - name: Show BGP summary
 #   ansible.builtin.debug:
