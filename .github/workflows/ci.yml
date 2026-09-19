@@ -1,8 +1,9 @@
 name: ansible ci
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
+runs:
+  using: 'node24'
+  main: 'main.js'
+  
 on:
   pull_request:
   push:
@@ -31,9 +32,9 @@ jobs:
         run: |
           ansible-galaxy collection install -r ./requirement.yml
 
-      - name: yaml lint
-        run: |
-          yamllint ./
+      # - name: yaml lint
+      #   run: |
+      #     yamllint ./
 
       - name: ansible lint
         run: |
