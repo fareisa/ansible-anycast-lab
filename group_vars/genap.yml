@@ -55,7 +55,7 @@ lb7_haproxy_vhosts:
 
   - backend: app-ganjil
     servers:
-      - "{{ lb4_1.address.ovs6int }}:{{ global.port }} check"
+      - "{{ lb4_1.address.ovs6int }}:{{ zone.port }} check"
     rule: host_app-ganjil net_ganjil
 
 lb4_haproxy_vhosts: 

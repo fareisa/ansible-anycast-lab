@@ -54,8 +54,8 @@ lb7_haproxy_vhosts:
 
   - backend: app-genap
     servers:
-      - "{{ lb4_2.address.ovs6int }}:{{ global.port }} check"
-      - "{{ lb4_3.address.ovs6int }}:{{ global.port }} check"
+      - "{{ lb4_2.address.ovs6int }}:{{ zone.port }} check"
+      - "{{ lb4_3.address.ovs6int }}:{{ zone.port }} check"
     rule: host_app-genap net_genap
 
 lb4_haproxy_vhosts: 
