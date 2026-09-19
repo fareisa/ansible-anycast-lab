@@ -29,9 +29,15 @@ lb7_haproxy_acl:
     - acl_name: host_app-global
       hostname: app-global.wahaha.lab
 
+    - acl_name: host_app-ganjil
+      hostname: app-ganjil.wahaha.lab
+
   network:
     - acl_name: net_genap
       network: "{{ client_network }}"
+
+    - acl_name: net_ganjil
+      network: "{{ host_vars['lb7-1-ganjil']['client_network'] }}"
 
 lb7_haproxy_vhosts:
   - backend: app-genap
@@ -46,6 +52,11 @@ lb7_haproxy_vhosts:
       - "{{ lb4_2.address.ovs5int }}:{{ global.port }} check"
       - "{{ lb4_3.address.ovs5int }}:{{ global.port }} check"
     rule: host_app-global
+
+  - backend: app-ganjil
+    servers:
+      - "{{ lb4_1.address.ovs6int }}:{{ global.port }} check"
+    rule: host_app-ganjil net_ganjil
 
 lb4_haproxy_vhosts: 
   - backend: global-app
