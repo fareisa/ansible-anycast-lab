@@ -59,6 +59,7 @@ frontend http_in
 {% for vhost in lb7_haproxy_vhosts %}
 
 backend {{ vhost.backend }}
+    http-check expect status 200
 {% for server in vhost.servers %}
     server {{ vhost.backend }}-{{ loop.index }} {{ server }}
 {% endfor %}
