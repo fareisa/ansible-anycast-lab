@@ -1,5 +1,4 @@
 --- 
-
 - name: mikrotik config
   hosts: mikrotik
   gather_facts: false
@@ -17,7 +16,6 @@
     - bgp-mikrotik
   tags:
     - mikrotik
-
 - name: lb7 config
   hosts: lb7
   roles:
@@ -26,14 +24,12 @@
     - haproxy
   tags: 
     - lb7
-
 - name: lb4 config
   hosts: lb4
   roles:
     - haproxy
   tags: 
     - lb4    
-
 - name: app config
   hosts: app
   roles: 
