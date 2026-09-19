@@ -1,9 +1,6 @@
 ansible_user: ubuntu
 ansible_become: true
 
-### refer to repo source
-frr_version: "frr-10.7"
-
 ### global app endpoint
 global:
   port: 8080
