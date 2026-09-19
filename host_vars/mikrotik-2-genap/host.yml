@@ -28,7 +28,6 @@ ip_address:
 
 bgp_connection:
 
-## iBGP
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
@@ -39,7 +38,6 @@ bgp_connection:
     keepalive-time: 1s
     output.network: bgp-network
 
-## eBGP
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"

@@ -29,7 +29,6 @@ ip_address:
 
 bgp_connection:
 
-## IBGP
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
@@ -52,7 +51,6 @@ bgp_connection:
     hold-time: 3s
     keepalive-time: 1s
 
-## EBGP
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
     as: "{{ asn }}"
@@ -64,7 +62,6 @@ bgp_connection:
     keepalive-time: 1s
 
 address_list:
-## advertised network
   - list: bgp-network
     address: 10.11.10.0/24
 
@@ -76,4 +73,3 @@ address_list:
 
   - list: bgp-network
     address: 10.15.0.4/30
-##
