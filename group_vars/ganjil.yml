@@ -39,23 +39,36 @@ lb7_haproxy_acl:
     - acl_name: net_genap
       network: "{{ hostvars['lb7-2-genap']['client_network'] }}"
 
+lb7_haproxy_healthcheck:
+  - name: app-ganjil
+    uri: /
+    hostname: app-ganjil.wahaha.lab
+
+  - name: app-global
+    uri: /
+    hostname: app-global.wahaha.lab
+
+  - name: app-genap
+    uri: /
+    hostname: app-genap.wahaha.lab        
+
 lb7_haproxy_vhosts: 
   - backend: app-ganjil
     servers:
-      - "{{ lb4_1.address.ovs5int }}:{{ zone.port }} check"
+      - "{{ lb4_1.address.ovs5int }}:{{ zone.port }} check healthcheck app-ganjil"
     rule: host_app-ganjil net_ganjil
 
   - backend: app-global
     servers:
-      - "{{ lb4_1.address.ovs5int }}:{{ global.port }} check"
-      - "{{ lb4_2.address.ovs6int }}:{{ global.port }} check backup"
-      - "{{ lb4_3.address.ovs6int }}:{{ global.port }} check backup"
+      - "{{ lb4_1.address.ovs5int }}:{{ global.port }} check healthcheck app-global"
+      - "{{ lb4_2.address.ovs6int }}:{{ global.port }} check backup healthcheck app-global"
+      - "{{ lb4_3.address.ovs6int }}:{{ global.port }} check backup healthcheck app-global"
     rule: host_app-global
 
   - backend: app-genap
     servers:
-      - "{{ lb4_2.address.ovs6int }}:{{ zone.port }} check"
-      - "{{ lb4_3.address.ovs6int }}:{{ zone.port }} check"
+      - "{{ lb4_2.address.ovs6int }}:{{ zone.port }} check healthcheck app-genap"
+      - "{{ lb4_3.address.ovs6int }}:{{ zone.port }} check healthcheck app-genap"
     rule: host_app-genap net_genap
 
 lb4_haproxy_vhosts: 

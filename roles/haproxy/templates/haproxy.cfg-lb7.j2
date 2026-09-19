@@ -41,6 +41,13 @@ frontend stats
   stats uri /
   stats show-modules
 
+{% for check in lb7_haproxy_healthcheck %}
+healthcheck {{ check.name }}
+    type httpchk
+    http-check send meth HEAD uri {{ check.uri }} ver HTTP/2 hdr Host {{ check.hostname }}
+    http-check expect status 200
+{% endfor %}
+
 frontend http_in
     bind {{ anycast_ip }}:{{ haproxy.port_in }}
 
@@ -57,12 +64,8 @@ frontend http_in
 {% endfor %}
 
 {% for vhost in lb7_haproxy_vhosts %}
-
-backend {{ vhost.backend }}
-    option httpchk
-    http-check expect status 200
+backend {{ vhost.backend }}  
 {% for server in vhost.servers %}
     server {{ vhost.backend }}-{{ loop.index }} {{ server }}
 {% endfor %}
-
 {% endfor %}
