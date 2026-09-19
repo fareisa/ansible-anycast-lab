@@ -1,0 +1,4 @@
+ansible==14.3.1
+ansible-core==2.21.3
+librouteros==4.2.0
+ansible-pylibssh==1.4.0
