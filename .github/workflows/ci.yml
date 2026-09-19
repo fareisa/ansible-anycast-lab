@@ -26,7 +26,7 @@ jobs:
 
       - name: install ansible collection
         run: |
-          ansible-galaxy collection install -r ./requirement.txt
+          ansible-galaxy collection install -r ./requirement.yml
 
       - name: yaml lint
         run: |
