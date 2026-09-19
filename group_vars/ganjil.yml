@@ -37,7 +37,7 @@ lb7_haproxy_acl:
       network: "{{ client_network }}"
 
     - acl_name: net_genap
-      network: "{{ host_vars['lb7-2-genap']['client_network'] }}"
+      network: "{{ hostvars['lb7-2-genap']['client_network'] }}"
 
 lb7_haproxy_vhosts: 
   - backend: app-ganjil
