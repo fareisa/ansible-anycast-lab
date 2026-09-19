@@ -40,6 +40,9 @@
     dest: /etc/frr/daemons
   notify: Restart FRR
 
+- name: Flush FRR handler
+  ansible.builtin.meta: flush_handlers
+
 - name: Deploy FRR configuration for bgp
   ansible.builtin.template:
     src: frr.conf.j2
