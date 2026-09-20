@@ -1,0 +1,185 @@
+project_name: 9-vm-2gb
+
+proxmox:
+  endpoint: "https://192.168.11.254:8006/api2/json"
+  api_token: "terraform@pam!tes=<token>"
+  node: "pve-core"
+  template_id: 105
+
+vms:
+  - name: lb7-1-ganjil
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs3int
+        ip: 10.11.10.2/24
+      - bridge: ovs5int
+        ip: 10.11.20.1/24
+      - bridge: ovs6int
+        ip: 10.15.20.10/24
+
+  - name: lb7-2-genap
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs3int
+        ip: 10.12.10.2/24
+      - bridge: ovs5int
+        ip: 10.12.20.1/24
+      - bridge: ovs6int
+        ip: 10.15.20.20/24
+
+  - name: lb7-3-genap
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs3int
+        ip: 10.12.10.3/24
+      - bridge: ovs5int
+        ip: 10.12.20.2/24
+      - bridge: ovs6int
+        ip: 10.15.20.21/24
+
+  - name: lb4-1-ganjil
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs5int
+        ip: 10.11.20.2/24
+      - bridge: ovs6int
+        ip: 10.15.20.11/24
+      - bridge: ovs7int
+        ip: 10.11.30.1/24
+
+  - name: lb4-2-genap
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs5int
+        ip: 10.12.20.3/24
+      - bridge: ovs6int
+        ip: 10.15.20.22/24
+      - bridge: ovs7int
+        ip: 10.12.30.1/24
+
+  - name: lb4-3-genap
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs5int
+        ip: 10.12.20.4/24
+      - bridge: ovs6int
+        ip: 10.15.20.23/24
+      - bridge: ovs7int
+        ip: 10.12.30.2/24
+
+  - name: app-1-ganjil
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs7int
+        ip: 10.11.30.10/24
+
+  - name: app-2-lb-genap
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs7int
+        ip: 10.12.30.10/24
+
+  - name: app-3-lb-genap
+    cores: 2
+    memory: 2048
+    user: ubuntu
+    password: ubuntu
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZlmD7Xh9L9juDYIrQp7tqeFRevClFp8MzfC36f6gAr root@wahaha-lab"
+    disks:
+      - datastore: local-lvm-1
+        interface: scsi0
+        size: 20
+    network:
+      - bridge: vmbr0
+        ip: dhcp
+      - bridge: ovs7int
+        ip: 10.12.30.11/24
