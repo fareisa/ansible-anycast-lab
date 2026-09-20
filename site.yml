@@ -10,16 +10,16 @@
       handle_absent_entries: "remove"
       handle_entries_content: "remove_as_much_as_possible"
   roles:
-    - presetup-mikrotik
-    - ipaddress-mikrotik
-    - dhcp-mikrotik
-    - bgp-mikrotik
+    - presetup_mikrotik
+    - ipaddress_mikrotik
+    - dhcp_mikrotik
+    - bgp_mikrotik
   tags:
     - mikrotik
 - name: lb7 config
   hosts: lb7
   roles:
-    - presetup-lb7
+    - presetup_lb7
     - frr
     - haproxy
   tags:
@@ -33,6 +33,6 @@
 - name: app config
   hosts: app
   roles:
-    - web-app
+    - web_app
   tags:
     - app
