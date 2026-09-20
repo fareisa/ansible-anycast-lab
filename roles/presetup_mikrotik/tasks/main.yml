@@ -1,7 +1,7 @@
 - name: set user api
   community.routeros.command:
     commands:
-      - /user add name="{{ user }}" password="{{ pass }}" group=full
+      - /user add name="{{ user_mikrotik }}" password="{{ pass_mikrotik }}" group=full
   changed_when: false
 
 - name: set system identity

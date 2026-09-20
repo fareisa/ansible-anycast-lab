@@ -52,7 +52,8 @@
     mode: "0640"
   notify: Restart FRR
 
-- block:
+- name: began bgp connectivity check
+  block:
     - name: Verify FRR BGP
       ansible.builtin.command:
         cmd: vtysh -c "show bgp summary"

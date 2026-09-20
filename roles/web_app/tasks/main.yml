@@ -18,13 +18,13 @@
     group: root
     mode: "0755"
   loop:
-    - "{{ global.directory }}"
+    - "{{ app_global.directory }}"
     - "{{ zone.directory }}"
 
 - name: Install the global application page
   ansible.builtin.template:
-    src: "{{ global.directory }}.html.j2"
-    dest: "{{ web_root }}/{{ global.directory }}/index.html"
+    src: "{{ app_global.directory }}.html.j2"
+    dest: "{{ web_root }}/{{ app_global.directory }}/index.html"
     owner: www-data
     group: www-data
     mode: "0644"

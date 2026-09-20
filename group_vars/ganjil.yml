@@ -60,9 +60,9 @@ lb7_haproxy_vhosts:
 
   - backend: app-global
     servers:
-      - "{{ lb4_1.address.ovs5int }}:{{ global.port }} check healthcheck app-global"
-      - "{{ lb4_2.address.ovs6int }}:{{ global.port }} check backup healthcheck app-global"
-      - "{{ lb4_3.address.ovs6int }}:{{ global.port }} check backup healthcheck app-global"
+      - "{{ lb4_1.address.ovs5int }}:{{ app_global.port }} check healthcheck app-global"
+      - "{{ lb4_2.address.ovs6int }}:{{ app_global.port }} check backup healthcheck app-global"
+      - "{{ lb4_3.address.ovs6int }}:{{ app_global.port }} check backup healthcheck app-global"
     rule: host_app-global
 
   - backend: app-genap
@@ -74,9 +74,9 @@ lb7_haproxy_vhosts:
 lb4_haproxy_vhosts:
   - backend: global-app
     frontend: global-ingress
-    frontend_port: "{{ global.port }}"
+    frontend_port: "{{ app_global.port }}"
     servers:
-      - "{{ app_1.address.ovs7int }}:{{ global.port }} check"
+      - "{{ app_1.address.ovs7int }}:{{ app_global.port }} check"
 
   - backend: ganjil-app
     frontend: ganjil-ingress

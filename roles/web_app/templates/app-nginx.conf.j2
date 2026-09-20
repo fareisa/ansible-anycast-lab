@@ -1,9 +1,9 @@
 server {
-    listen {{ global.port }} default_server;
-    listen [::]:{{ global.port }} default_server;
+    listen {{ app_global.port }} default_server;
+    listen [::]:{{ app_global.port }} default_server;
 
     server_name _;
-    root {{ web_root }}/{{ global.directory }};
+    root {{ web_root }}/{{ app_global.directory }};
     index index.html;
 
     location / {

@@ -2,7 +2,7 @@ ansible_user: ubuntu
 ansible_become: true
 
 ### global app endpoint
-global:
+app_global:
   port: 8080
   directory: app-global
 web_root: /var/www
