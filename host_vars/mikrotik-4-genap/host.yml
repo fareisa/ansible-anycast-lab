@@ -85,8 +85,8 @@ address_list:
   - list: bgp-network
     address: 10.12.0.0/30
 
-  - list: bgp-network
-    address: "{{ anycast_ip }}"
+  # - list: bgp-network
+  #   address: "{{ anycast_ip }}"
 
   - list: bgp-network
     address: 10.15.0.0/30
