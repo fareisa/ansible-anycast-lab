@@ -1,4 +1,4 @@
---- 
+---
 - name: mikrotik config
   hosts: mikrotik
   gather_facts: false
@@ -22,17 +22,17 @@
     - presetup-lb7
     - frr
     - haproxy
-  tags: 
+  tags:
     - lb7
 - name: lb4 config
   hosts: lb4
   roles:
     - haproxy
-  tags: 
-    - lb4    
+  tags:
+    - lb4
 - name: app config
   hosts: app
-  roles: 
+  roles:
     - web-app
   tags:
     - app

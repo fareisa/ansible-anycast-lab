@@ -27,13 +27,13 @@
     state: present
     update_cache: true
 
-- name: makesure haproxy is start and enabled 
+- name: makesure haproxy is start and enabled
   service:
     name: haproxy
     state: started
     enabled: true
 
-- name: deploy configuration 
+- name: deploy configuration
   template:
     src: "{{ haproxy.template }}"
     dest: /etc/haproxy/haproxy.cfg

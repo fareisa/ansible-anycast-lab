@@ -30,7 +30,7 @@ lb7_haproxy_acl:
       hostname: app-global.wahaha.lab
 
     - acl_name: host_app-genap
-      hostname: app-genap.wahaha.lab    
+      hostname: app-genap.wahaha.lab
 
   network:
     - acl_name: net_ganjil
@@ -50,9 +50,9 @@ lb7_haproxy_healthcheck:
 
   - name: app-genap
     uri: /
-    hostname: app-genap.wahaha.lab        
+    hostname: app-genap.wahaha.lab
 
-lb7_haproxy_vhosts: 
+lb7_haproxy_vhosts:
   - backend: app-ganjil
     servers:
       - "{{ lb4_1.address.ovs5int }}:{{ zone.port }} check healthcheck app-ganjil"
@@ -71,15 +71,15 @@ lb7_haproxy_vhosts:
       - "{{ lb4_3.address.ovs6int }}:{{ zone.port }} check healthcheck app-genap"
     rule: host_app-genap net_genap
 
-lb4_haproxy_vhosts: 
+lb4_haproxy_vhosts:
   - backend: global-app
     frontend: global-ingress
-    frontend_port: "{{ global.port }}" 
+    frontend_port: "{{ global.port }}"
     servers:
       - "{{ app_1.address.ovs7int }}:{{ global.port }} check"
 
   - backend: ganjil-app
     frontend: ganjil-ingress
-    frontend_port: "{{ zone.port }}" 
-    servers: 
+    frontend_port: "{{ zone.port }}"
+    servers:
       - "{{ app_1.address.ovs7int }}:{{ zone.port }} check"

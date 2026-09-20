@@ -3,7 +3,7 @@ name: ansible ci
 runs:
   using: 'node24'
   main: 'main.js'
-  
+
 on:
   pull_request:
   push:
@@ -43,4 +43,3 @@ jobs:
       - name: ansible syntax check
         run: |
           ansible-playbook --syntax-check site.yml
-

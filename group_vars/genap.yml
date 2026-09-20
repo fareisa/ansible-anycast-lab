@@ -50,7 +50,7 @@ lb7_haproxy_healthcheck:
 
   - name: app-genap
     uri: /
-    hostname: app-genap.wahaha.lab        
+    hostname: app-genap.wahaha.lab
 
 lb7_haproxy_vhosts:
   - backend: app-genap
@@ -71,17 +71,17 @@ lb7_haproxy_vhosts:
       - "{{ lb4_1.address.ovs6int }}:{{ zone.port }} check healthcheck app-genap"
     rule: host_app-ganjil net_ganjil
 
-lb4_haproxy_vhosts: 
+lb4_haproxy_vhosts:
   - backend: global-app
     frontend: global-ingress
-    frontend_port: "{{ global.port }}" 
+    frontend_port: "{{ global.port }}"
     servers:
       - "{{ app_2_lb.address.ovs7int }}:{{ global.port }} check"
       - "{{ app_3_lb.address.ovs7int }}:{{ global.port }} check"
 
   - backend: genap-app
     frontend: genap-ingress
-    frontend_port: "{{ zone.port }}" 
-    servers: 
+    frontend_port: "{{ zone.port }}"
+    servers:
       - "{{ app_2_lb.address.ovs7int }}:{{ zone.port }} check"
-      - "{{ app_3_lb.address.ovs7int }}:{{ zone.port }} check"      
+      - "{{ app_3_lb.address.ovs7int }}:{{ zone.port }} check"
