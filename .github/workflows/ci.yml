@@ -1,9 +1,5 @@
 name: ansible ci
 
-runs:
-  using: 'node24'
-  main: 'main.js'
-
 on:
   pull_request:
   push:
@@ -16,7 +12,7 @@ jobs:
 
     steps:
       - name: checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: setup python
         uses: actions/setup-python@v5
