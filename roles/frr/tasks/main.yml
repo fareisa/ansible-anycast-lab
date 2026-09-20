@@ -29,13 +29,13 @@
     update_cache: true
 
 - name: makesure service is start and enabled
-  service:
+  ansible.builtin.service:
     name: frr
     state: started
     enabled: true
 
 - name: copy template daemon config
-  template:
+  ansible.builtin.template:
     src: frr-daemons.j2
     dest: /etc/frr/daemons
   notify: Restart FRR

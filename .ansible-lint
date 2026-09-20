@@ -1,0 +1,9 @@
+---
+profile: basic
+
+skip_list:
+  - fqcn[action-core]
+  - name[casing]
+  - yaml[empty-lines]
+  - var-naming[no-role-prefix]
+  - trailling-spaces

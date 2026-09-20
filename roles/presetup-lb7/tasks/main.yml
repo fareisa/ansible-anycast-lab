@@ -8,16 +8,16 @@
   changed_when: anycast_interface.rc == 0
 
 - name: Bring anycast interface up
-  command:
+  ansible.builtin.command:
     cmd: ip link set anycast0 up
   changed_when: false
 
 - name: Configure Anycast VIP
-  command:
+  ansible.builtin.command:
     cmd: "ip addr replace {{ anycast_ip }}/32 dev anycast0"
   changed_when: false
 
 - name: Add Anycast route
-  command:
+  ansible.builtin.command:
     cmd: "ip route replace {{ anycast_ip }}/32 dev anycast0"
   changed_when: false
