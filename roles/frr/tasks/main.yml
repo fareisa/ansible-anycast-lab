@@ -52,6 +52,9 @@
     mode: "0640"
   notify: Restart FRR
 
+- name: Flush FRR handler
+  ansible.builtin.meta: flush_handlers
+
 - name: began bgp connectivity check
   block:
     - name: Verify FRR BGP

@@ -3,12 +3,17 @@ frr defaults traditional
 service integrated-vtysh-config
 hostname {{ inventory_hostname }}
 
-router bgp {{ asn }}
-  bgp router-id {{ ansible_host }}
+{% for bgp in bgp_frr %}
+router bgp {{ bgp.name }}
+  bgp router-id {{ bgp.router_id }}
 
-{% for neighbor in bgp_neighbors %}
-  neighbor {{ neighbor.address }} remote-as {{ neighbor.remote_as }}
+{% for neighbor in bgp.neighbor %}
+  neighbor {{ neighbor }}
 {% endfor %}
 
-  network {{ anycast_ip }}/32
+{% for network in bgp.network %}
+  network {{ network }}
+{% endfor %}
+
+{% endfor %}
 !

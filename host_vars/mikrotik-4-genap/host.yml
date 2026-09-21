@@ -79,9 +79,9 @@ bgp_connection:
     hold-time: 3s
     keepalive-time: 1s
 
-# address_list:
-#   - list: bgp-network
-#     address: 10.12.10.0/24
+address_list:
+  - list: bgp-network
+    address: 10.12.10.0/24
 
 #   - list: bgp-network
 #     address: 10.12.0.0/30
