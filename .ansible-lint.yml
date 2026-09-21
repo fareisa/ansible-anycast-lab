@@ -6,3 +6,4 @@ skip_list:
   - yaml[empty-lines]
   - var-naming[no-role-prefix]
   - yaml[trailing-spaces]
+  - yaml[new-line-at-end-of-file]
