@@ -1,0 +1,17 @@
+name: test runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, lab-rumah]
+
+    steps:
+      - name: check runner
+        run: |
+          hostname
+          uname -a
+          python3 --version
+          ./venv/bin/ansible --version
+        working-directory: /root/vm-deploy/config/my-ansible
