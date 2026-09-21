@@ -13,4 +13,16 @@ jobs:
           hostname
           uname -a
           python3 --version
-          ./venv/bin/ansible --version
+          ~/global-venv/bin/ansible --version
+
+      - name: checkout repo
+        uses: actions/checkout@v7
+        
+      - name: check ansible
+        run: |
+          ~/global-venv/bin/ansible --version
+          ~/global-venv/bin/ansible-inventory -i ./inventory.ini --graph
+
+      - name: ping all remote host
+        run: |
+          ~/global-venv/bin/ansible all -m ping
