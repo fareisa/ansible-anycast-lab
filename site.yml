@@ -16,6 +16,8 @@
     - bgp_mikrotik
   tags:
     - mikrotik
+    - bgp
+
 - name: lb7 config
   hosts: lb7
   roles:
@@ -24,6 +26,8 @@
     - haproxy
   tags:
     - lb7
+    - bgp
+
 - name: lb4 config
   hosts: lb4
   roles:

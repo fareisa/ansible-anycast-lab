@@ -35,7 +35,9 @@ bgp_connection:
     remote.address: "{{ mikrotik_3.address.ovs1int }}"
     hold-time: 3s
     keepalive-time: 1s
-    output.network: bgp-network
+    output.network: none
+    output.redistribute: connected
+    nexthop-choice: force-self
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -43,7 +45,7 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-4-genap']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_4.address.ovs2int }}"
-    output.redistribute: bgp
+    output.redistribute: connected
     hold-time: 3s
     keepalive-time: 1s
     output.network: none
@@ -62,11 +64,10 @@ dhcp_network:
     gateway: "{{ mikrotik_1.address.ovs4int }}"
     dns-server: "{{ mikrotik_1.address.ovs4int }}"
 
-address_list:
-  - list: bgp-network
-    address: "{{ client_network }}"
+# address_list:
+#   - list: bgp-network
+#     address: "{{ client_network }}"
 
-## not used
 # firewall_nat:
 #   - chain: srcnat
 #     action: masquerade

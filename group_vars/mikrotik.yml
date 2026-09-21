@@ -7,8 +7,3 @@ ansible_gather_facts: false
 pass_mikrotik: 123
 user_mikrotik: tes
 
-bgp_instance:
-  - name: "{{ inventory_hostname }}"
-    router-id: "{{ ansible_host }}"
-    as: "{{ asn }}"
-
