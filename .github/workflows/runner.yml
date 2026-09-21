@@ -14,4 +14,3 @@ jobs:
           uname -a
           python3 --version
           ./venv/bin/ansible --version
-        working-directory: /root/vm-deploy/config/my-ansible
