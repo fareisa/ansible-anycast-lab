@@ -51,7 +51,7 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-1-ganjil']['asn'] }}"
     local.role: ibgp-rr
     remote.address: "{{ mikrotik_1.address.ovs1int }}"
-    output.network: to-lb7
+    output.network: none
     nexthop-choice: force-self
     hold-time: 3s
     keepalive-time: 1s
