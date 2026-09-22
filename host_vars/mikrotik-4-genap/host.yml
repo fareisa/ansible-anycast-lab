@@ -41,7 +41,7 @@ bgp_connection:
     remote.as: "{{ hostvars['lb7-2-genap']['asn'] }}"
     local.role: ibgp-rr
     remote.address: "{{ lb7_2.address.ovs3int }}"
-    output.network: to-mk
+    output.network: none
     nexthop-choice: force-self
     hold-time: 3s
     keepalive-time: 1s
@@ -52,7 +52,7 @@ bgp_connection:
     remote.as: "{{ hostvars['lb7-3-genap']['asn'] }}"
     local.role: ibgp-rr
     remote.address: "{{ lb7_3.address.ovs3int }}"
-    output.network: to-mk
+    output.network: none
     nexthop-choice: force-self
     hold-time: 3s
     keepalive-time: 1s
@@ -74,20 +74,20 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-1-ganjil']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_1.address.ovs2int }}"
-    output.network: none
-    output.redistribute: bgp
+    output.network: bgp-network
+    # output.redistribute: bgp
     hold-time: 3s
     keepalive-time: 1s
 
 address_list:
-  - list: to-lb7
-    address: 10.12.10.0/24
+  # - list: to-lb7
+  #   address: 10.12.10.0/24
 
-  - list: to-mk
-    address: 10.12.0.0/30
+  # - list: to-mk
+  #   address: 10.12.0.0/30
 
-  # - list: bgp-network
-  #   address: "{{ anycast_ip }}"
+  - list: bgp-network
+    address: "{{ anycast_ip }}"
 
   # - list: bgp-network
   #   address: 10.15.0.0/30

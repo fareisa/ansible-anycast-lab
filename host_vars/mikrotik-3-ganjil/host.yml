@@ -31,6 +31,7 @@ bgp_instance:
   - name: "{{ inventory_hostname }}"
     router-id: "{{ ansible_host }}"
     as: "{{ asn }}"
+    multipath: 1
 
 bgp_connection:
 
@@ -40,7 +41,7 @@ bgp_connection:
     remote.as: "{{ hostvars['lb7-1-ganjil']['asn'] }}"
     local.role: ibgp-rr
     remote.address: "{{ lb7_1.address.ovs3int }}"
-    output.network: to-mk
+    output.network: none
     nexthop-choice: force-self
     hold-time: 3s
     keepalive-time: 1s
@@ -62,20 +63,20 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-2-genap']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_2.address.ovs2int }}"
-    output.network: none
-    output.redistribute: bgp
+    output.network: bgp-network
+    # output.redistribute: bgp
     hold-time: 3s
     keepalive-time: 1s
 
 address_list:
-  - list: to-lb7
-    address: 10.11.10.0/24
+  # - list: to-lb7
+  #   address: 10.11.10.0/24
 
-  - list: to-mk
-    address: 10.11.0.0/30
+  # - list: to-mk
+  #   address: 10.11.0.0/30
 
-  # - list: bgp-network
-  #   address: "{{ anycast_ip }}"
+  - list: bgp-network
+    address: "{{ anycast_ip }}"
 
   # - list: bgp-network
   #   address: 10.15.0.4/30
