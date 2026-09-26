@@ -1,0 +1,10 @@
+server_address_variables:
+  lb4-1-ganjil: lb4_1
+  lb4-2-genap: lb4_2
+  lb4-3-genap: lb4_3
+  lb7-1-ganjil: lb7_1
+  lb7-2-genap: lb7_2
+  lb7-3-genap: lb7_3
+  app-1-ganjil: app_1
+  app-2-lb-genap: app_2_lb
+  app-3-lb-genap: app_3_lb
