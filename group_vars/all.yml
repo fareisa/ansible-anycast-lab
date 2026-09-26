@@ -27,21 +27,21 @@ mikrotik_4:
 lb7_1:
   address:
     ovs3int: 10.11.10.2
-    ovs4int: 10.15.10.10
+    # ovs4int: 10.15.10.10
     ovs5int: 10.11.20.1
     ovs6int: 10.15.20.10
 
 lb7_2:
   address:
     ovs3int: 10.12.10.2
-    ovs4int: 10.15.10.20
+    # ovs4int: 10.15.10.20
     ovs5int: 10.12.20.1
     ovs6int: 10.15.20.20
 
 lb7_3:
   address:
     ovs3int: 10.12.10.3
-    ovs4int: 10.15.10.21
+    # ovs4int: 10.15.10.21
     ovs5int: 10.12.20.2
     ovs6int: 10.15.20.21
 
