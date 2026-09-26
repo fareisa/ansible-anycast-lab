@@ -1,0 +1,27 @@
+- name: Map server inventory names to shared address variables
+  ansible.builtin.set_fact:
+    server_address_variable: "{{ server_address_variables.get(inventory_hostname, '') }}"
+    
+- name: Validate server precheck inputs
+  ansible.builtin.assert:
+    that:
+      - server_address_variable | length > 0
+      - ansible_facts['hostname'] == inventory_hostname
+    fail_msg: >-
+      Precheck failed for {{ inventory_hostname }}: expected OS hostname
+      {{ inventory_hostname }}, got {{ ansible_facts['hostname'] }}; address mapping
+      {{ server_address_variable | default('missing') }}.
+    success_msg: "Hostname for {{ inventory_hostname }} matches inventory."
+
+- name: Load expected server IP addresses
+  ansible.builtin.set_fact:
+    server_expected_ips: "{{ hostvars[inventory_hostname][server_address_variable].address.values() | list }}"
+
+- name: Validate server IP addresses
+  ansible.builtin.assert:
+    that:
+      - server_expected_ips | difference(ansible_facts['all_ipv4_addresses']) | length == 0
+    fail_msg: >-
+      Precheck failed for {{ inventory_hostname }}: configured IPs missing from
+      the host: {{ server_expected_ips | difference(ansible_facts['all_ipv4_addresses']) }}.
+    success_msg: "All configured IP addresses are present on {{ inventory_hostname }}."

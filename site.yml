@@ -1,4 +1,12 @@
 ---
+# - name: Precheck server hosts
+#   hosts: server
+#   gather_facts: true
+#   roles:
+#     - precheck_server
+#   tags:
+#     - precheck
+
 - name: mikrotik config
   hosts: mikrotik
   gather_facts: false
