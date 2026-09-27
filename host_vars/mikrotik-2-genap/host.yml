@@ -3,10 +3,10 @@ interfaces:
     comment: 'remote'
 
   - default-name: ether2
-    comment: 'interzone'
+    comment: 'not-used'
 
   - default-name: 'ether3'
-    comment: 'outerzone'
+    comment: 'to-mk3'
 
   - default-name: 'ether4'
     comment: 'not used'
@@ -26,17 +26,19 @@ ip_address:
   - interface: ether5
     address: "{{ mikrotik_2.address.ovs4int }}/24"
 
+asn: 65333
+
 bgp_connection:
 
-  - name: "{{ bgp_name }}"
-    instance: "{{ inventory_hostname }}"
-    as: "{{ asn }}"
-    remote.as: "{{ hostvars['mikrotik-4-genap']['asn'] }}"
-    local.role: ibgp
-    remote.address: "{{ mikrotik_4.address.ovs1int }}"
-    hold-time: 3s
-    keepalive-time: 1s
-    output.network: bgp-network
+  # - name: "{{ bgp_name }}"
+  #   instance: "{{ inventory_hostname }}"
+  #   as: "{{ asn }}"
+  #   remote.as: "{{ hostvars['mikrotik-4-genap']['asn'] }}"
+  #   local.role: ibgp
+  #   remote.address: "{{ mikrotik_4.address.ovs1int }}"
+  #   hold-time: 3s
+  #   keepalive-time: 1s
+  #   output.network: bgp-network
     # output.redistribute: null
     # nexthop-choice: null
 

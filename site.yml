@@ -31,7 +31,7 @@
   roles:
     - presetup_lb7
     - frr
-    - haproxy
+    # - haproxy
   tags:
     - lb7
     - bgp
