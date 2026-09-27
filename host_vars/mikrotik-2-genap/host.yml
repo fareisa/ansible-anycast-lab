@@ -37,8 +37,6 @@ bgp_connection:
     hold-time: 3s
     keepalive-time: 1s
     output.network: bgp-network
-    # output.redistribute: null
-    # nexthop-choice: null
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -46,7 +44,6 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_3.address.ovs2int }}"
-    # output.redistribute: null
     hold-time: 3s
     keepalive-time: 1s
     output.network: bgp-network
