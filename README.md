@@ -4,14 +4,17 @@ This Repo is just manifest from my ansible playbook that running configuration f
 Also, some explanation about my ansible is more detail in here (supposed to be) than my article.
 Just info, this doc is mostly written by AI, im just too lazy to write docs.
 
-## Related VM generator
+## VM provisioning
 
-The [`9-vm-2gb/vm.yaml`](9-vm-2gb/vm.yaml) file is a VM definition template for
+The Ubuntu servers are provisioned separately with Terraform; this Ansible
+project configures them after they exist. The server precheck runs first to
+catch some hostname and address mismatches before configuration begins.
+
+The [`9-vm-2gb/vm.yaml`](9-vm-2gb/vm.yaml) file is also available as a VM
+definition template for
 [Spawn-VM-banyak-di-Proxmox](https://github.com/fareisa/Spawn-VM-banyak-di-Proxmox).
-Use that generator to create the nine Ubuntu VMs in Proxmox before running this
-Ansible project. The VM names and IP addresses in that file are expected to
-match the names and addresses in `inventory.ini`, `group_vars/`, and
-`host_vars/`.
+If using that generator instead, keep its VM names and IP addresses aligned
+with `inventory.ini` and `group_vars/`.
 
 The CI configuration is currently being worked on. I just want to try Ci/Cd pipeline, but i think its not recomended for this lab.
 
@@ -21,6 +24,7 @@ The CI configuration is currently being worked on. I just want to try Ci/Cd pipe
 
 | Play | Inventory group | Roles | Purpose |
 | --- | --- | --- | --- |
+| Server precheck | `server` | `precheck_server` | Checks that each Ubuntu server's OS hostname matches its inventory name and that its expected IPv4 addresses are present. Runs before the configuration plays. |
 | MikroTik config | `mikrotik` | `presetup_mikrotik`, `ipaddress_mikrotik`, `dhcp_mikrotik`, `bgp_mikrotik` | Creates the lab API user, sets router identity and DNS behavior, configures interfaces and IP addresses, creates DHCP services, and configures RouterOS BGP. |
 | LB7 config | `lb7` | `presetup_lb7`, `frr`, `haproxy` | Prepares the Ubuntu load balancers, installs/configures FRR, validates BGP neighbors, and configures the outer HAProxy layer. |
 | LB4 config | `lb4` | `haproxy` | Installs HAProxy and configures the inner load-balancing layer. |
@@ -29,11 +33,16 @@ The CI configuration is currently being worked on. I just want to try Ci/Cd pipe
 Run individual sections with tags when troubleshooting:
 
 ```bash
+ansible-playbook site.yml --tags precheck
 ansible-playbook site.yml --tags mikrotik
 ansible-playbook site.yml --tags lb7
 ansible-playbook site.yml --tags lb4
 ansible-playbook site.yml --tags app
 ```
+
+The precheck is the first play in a normal `site.yml` run. Run the `precheck`
+tag by itself after Terraform creates or changes the servers to check them
+before applying the configuration roles.
 
 ## Directory structure
 
@@ -54,6 +63,7 @@ ansible-playbook site.yml --tags app
 │   ├── frr/
 │   ├── haproxy/
 │   ├── ipaddress_mikrotik/
+│   ├── precheck_server/
 │   ├── presetup_lb7/
 │   ├── presetup_mikrotik/
 │   └── web_app/
@@ -112,6 +122,12 @@ disabled for these devices because i dont need it and it should use gather facts
 
 ### Ubuntu server roles
 
+- `precheck_server` gathers facts and checks that each server's OS hostname
+	matches its inventory name and that all IPv4 addresses declared for that
+	server in `group_vars/all.yml` are present on the host. It does not validate
+	subnet masks, gateways, connectivity, or unexpected extra addresses, so it
+	is a limited sanity check rather than proof that Terraform provisioned the
+	server correctly. The server must be reachable over SSH for fact gathering.
 - `presetup_lb7` prepares the LB7 hosts before routing and anycast IP.
 - `frr` adds the FRR repository, installs FRR, renders `daemons` and `frr.conf`,
 	and checks that expected BGP peers reach `Established` state.
@@ -128,8 +144,8 @@ You need:
 	`requirement.txt`.
 - The collection listed in `requirement.yml`.
 - A Proxmox lab with the required bridges, datastores, and base VM template.
-- Nine VMs created from `9-vm-2gb/vm.yaml`, or equivalent VMs with matching
-	names, interfaces, and addresses.
+- Ubuntu servers provisioned by Terraform (or an equivalent process), with
+	names and addresses matching `inventory.ini` and `group_vars/`.
 - Network access from the control machine to the MikroTik management API and
 	SSH access to the Ubuntu VMs.
 
