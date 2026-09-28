@@ -6,6 +6,7 @@
     - precheck_server
   tags:
     - precheck
+    - bgp
 
 - name: mikrotik config
   hosts: mikrotik
