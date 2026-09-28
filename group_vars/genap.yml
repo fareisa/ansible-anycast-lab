@@ -6,8 +6,6 @@ bgp_name: bgp-genap
 ## dhcp client
 client_network: 10.12.100.0/24
 client_pool: 10.12.100.100-10.12.100.200
-## network bgp 
-lb7_network: 10.12.10.0/24
 
 ## app config
 zone:
@@ -23,7 +21,6 @@ bgp_frr:
       - "{{ mikrotik_4.address.ovs3int }} remote-as {{ hostvars['mikrotik-4-genap']['asn'] }}"
     network:
       - "{{ anycast_ip }}/32"
-      - "{{ lb7_network }}"
 
 bgp_expected_neighbors:
   - "{{ mikrotik_4.address.ovs3int }}"
