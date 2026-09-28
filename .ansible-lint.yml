@@ -5,4 +5,5 @@ skip_list:
   - name[casing]
   - yaml[empty-lines]
   - var-naming[no-role-prefix]
-  - trailling-spaces
+  - yaml[trailing-spaces]
+  - yaml[new-line-at-end-of-file]

@@ -3,8 +3,8 @@
     path: ip firewall address-list
     data: "{{ address_list }}"
   when:
-    - bgp_instance is defined
-    - bgp_instance | length > 0
+    - address_list is defined
+    - address_list | length > 0
 
 - name: create bgp instance
   community.routeros.api_modify:

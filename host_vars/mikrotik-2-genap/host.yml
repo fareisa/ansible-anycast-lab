@@ -9,19 +9,23 @@ interfaces:
     comment: 'outerzone'
 
   - default-name: 'ether4'
-    comment: 'not used'
+    comment: 'not-used'
 
   - default-name: 'ether5'
     comment: 'client'
 
 ip_address:
   - interface: ether2
-    address: "{{ mikrotik_2.address.ovs1int }}/30"
+    address: "{{ mikrotik_2.address.ovs1int }}/24"
     comment: 'to mk4'
 
   - interface: ether3
-    address: "{{ mikrotik_2.address.ovs2int }}/30"
+    address: "{{ mikrotik_2.address.ovs2int.to_mk3 }}/30"
     comment: 'to mk3'
+
+  - interface: ether3
+    address: "{{ mikrotik_2.address.ovs2int.to_mk5 }}/30"
+    comment: 'to mk5'
 
   - interface: ether5
     address: "{{ mikrotik_2.address.ovs4int }}/24"
@@ -36,9 +40,7 @@ bgp_connection:
     remote.address: "{{ mikrotik_4.address.ovs1int }}"
     hold-time: 3s
     keepalive-time: 1s
-    output.network: none
-    output.redistribute: connected
-    nexthop-choice: force-self
+    output.network: bgp-network
 
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -46,10 +48,19 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_3.address.ovs2int }}"
-    output.redistribute: connected
     hold-time: 3s
     keepalive-time: 1s
-    output.network: none
+    output.network: bgp-network
+
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ hostvars['mikrotik-5-ganjil']['asn'] }}"
+    local.role: ebgp
+    remote.address: "{{ mikrotik_5.address.ovs2int }}"
+    hold-time: 3s
+    keepalive-time: 1s
+    output.network: bgp-network
 
 dhcp_server:
   - name: dhcp-genap
@@ -65,9 +76,9 @@ dhcp_network:
     gateway: "{{ mikrotik_2.address.ovs4int }}"
     dns-server: "{{ mikrotik_2.address.ovs4int }}"
 
-# address_list:
-#   - list: bgp-network
-#     address: "{{ client_network }}"
+address_list:
+  - list: bgp-network
+    address: "{{ client_network }}"
 
 # firewall_nat:
 #   - chain: srcnat
