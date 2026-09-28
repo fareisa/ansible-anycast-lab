@@ -9,19 +9,23 @@ interfaces:
     comment: 'outerzone'
 
   - default-name: 'ether4'
-    comment: 'not used'
+    comment: 'not-used'
 
   - default-name: 'ether5'
     comment: 'client'
 
 ip_address:
   - interface: ether2
-    address: "{{ mikrotik_2.address.ovs1int }}/30"
+    address: "{{ mikrotik_2.address.ovs1int }}/24"
     comment: 'to mk4'
 
   - interface: ether3
-    address: "{{ mikrotik_2.address.ovs2int }}/30"
+    address: "{{ mikrotik_2.address.ovs2int.to_mk3 }}/30"
     comment: 'to mk3'
+
+  - interface: ether3
+    address: "{{ mikrotik_2.address.ovs2int.to_mk5 }}/30"
+    comment: 'to mk5'
 
   - interface: ether5
     address: "{{ mikrotik_2.address.ovs4int }}/24"
@@ -44,6 +48,16 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
     local.role: ebgp
     remote.address: "{{ mikrotik_3.address.ovs2int }}"
+    hold-time: 3s
+    keepalive-time: 1s
+    output.network: bgp-network
+
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ hostvars['mikrotik-5-ganjil']['asn'] }}"
+    local.role: ebgp
+    remote.address: "{{ mikrotik_5.address.ovs2int }}"
     hold-time: 3s
     keepalive-time: 1s
     output.network: bgp-network

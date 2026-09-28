@@ -16,7 +16,7 @@ interfaces:
 
 ip_address:
   - interface: ether2
-    address: "{{ mikrotik_1.address.ovs1int }}/30"
+    address: "{{ mikrotik_1.address.ovs1int }}/24"
     comment: 'to mk3'
 
   - interface: ether3
@@ -26,6 +26,12 @@ ip_address:
   - interface: ether5
     address: "{{ mikrotik_1.address.ovs4int }}/24"
 
+bgp_instance:
+  - name: "{{ inventory_hostname }}"
+    router-id: "{{ ansible_host }}"
+    as: "{{ asn }}"
+    multipath: 2
+
 bgp_connection:
   - name: "{{ bgp_name }}"
     instance: "{{ inventory_hostname }}"
@@ -33,6 +39,16 @@ bgp_connection:
     remote.as: "{{ hostvars['mikrotik-3-ganjil']['asn'] }}"
     local.role: ibgp
     remote.address: "{{ mikrotik_3.address.ovs1int }}"
+    hold-time: 3s
+    keepalive-time: 1s
+    output.network: bgp-network
+
+  - name: "{{ bgp_name }}"
+    instance: "{{ inventory_hostname }}"
+    as: "{{ asn }}"
+    remote.as: "{{ hostvars['mikrotik-5-ganjil']['asn'] }}"
+    local.role: ibgp
+    remote.address: "{{ mikrotik_5.address.ovs1int }}"
     hold-time: 3s
     keepalive-time: 1s
     output.network: bgp-network

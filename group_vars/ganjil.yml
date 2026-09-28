@@ -6,8 +6,8 @@ bgp_name: bgp-ganjil
 ## dhcp client
 client_network: 10.11.100.0/24
 client_pool: 10.11.100.100-10.11.100.200
-## network bgp
-lb7_network: 10.11.10.0/24
+# ## network bgp
+# lb7_network: 10.11.10.0/24
 
 ### app config
 zone:
@@ -21,12 +21,13 @@ bgp_frr:
     router_id: "{{ ansible_host }}"
     neighbor:
       - "{{ mikrotik_3.address.ovs3int }} remote-as {{ hostvars['mikrotik-3-ganjil']['asn'] }}"
+      - "{{ mikrotik_5.address.ovs3int }} remote-as {{ hostvars['mikrotik-5-ganjil']['asn'] }}"
     network:
       - "{{ anycast_ip }}/32"
-      - "{{ lb7_network }}"
 
 bgp_expected_neighbors:
   - "{{ mikrotik_3.address.ovs3int }}"
+  - "{{ mikrotik_5.address.ovs3int }}"
 
 ### haproxy lb7 setup
 lb7_haproxy_acl:
