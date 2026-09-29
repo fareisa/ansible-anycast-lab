@@ -56,6 +56,7 @@
   ansible.builtin.meta: flush_handlers
 
 - name: began bgp connectivity check
+  ignore_errors: '{{ ansible_check_mode }}'
   block:
     - name: Verify FRR BGP summary
       ansible.builtin.command:
@@ -75,8 +76,6 @@
         fail_msg: "BGP neighbor {{ item }} is not Established"
         success_msg: "BGP neighbor {{ item }} is Established"
       loop: "{{ bgp_expected_neighbors }}"
-
-  ignore_errors: '{{ ansible_check_mode }}'
 
   rescue:
     - name: Restart FRR service after failed BGP check
@@ -108,8 +107,6 @@
         fail_msg: "BGP neighbor {{ item }} is not Established after restart"
         success_msg: "BGP neighbor {{ item }} is Established after restart"
       loop: "{{ bgp_expected_neighbors }}"
-      
-  ignore_errors: '{{ ansible_check_mode }}'
 
 # - name: Show BGP summary
 #   ansible.builtin.debug:
