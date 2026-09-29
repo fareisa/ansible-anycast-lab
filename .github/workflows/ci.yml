@@ -17,7 +17,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: " 3.12"
 
       - name: install ansible tools
         run: |
@@ -35,3 +35,7 @@ jobs:
       - name: ansible syntax check
         run: |
           ansible-playbook --syntax-check site.yml
+
+      - name: ansible dry-run
+        run: |
+          ansible-playbook --check site.yml

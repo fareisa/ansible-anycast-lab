@@ -26,16 +26,13 @@ bgp_expected_neighbors:
   - "{{ mikrotik_4.address.ovs3int }}"
 
 ### haproxy lb7 setup
-lb7_haproxy_acl:
+haproxy_acl:
   hostname:
     - acl_name: host_app-genap
       hostname: app-genap.wahaha.lab
 
     - acl_name: host_app-global
       hostname: app-global.wahaha.lab
-
-    - acl_name: host_app-ganjil
-      hostname: app-ganjil.wahaha.lab
 
   network:
     - acl_name: net_genap
@@ -45,10 +42,6 @@ lb7_haproxy_acl:
       network: "{{ hostvars['lb7-1-ganjil']['client_network'] }}"
 
 lb7_haproxy_healthcheck:
-  - name: app-ganjil
-    uri: /
-    hostname: app-ganjil.wahaha.lab
-
   - name: app-global
     uri: /
     hostname: app-global.wahaha.lab
@@ -60,33 +53,27 @@ lb7_haproxy_healthcheck:
 lb7_haproxy_vhosts:
   - backend: app-genap
     servers:
-      - "{{ lb4_2.address.ovs5int }}:{{ zone.port }} check healthcheck app-genap"
-      - "{{ lb4_3.address.ovs5int }}:{{ zone.port }} check healthcheck app-genap"
-    rule: host_app-genap net_genap
+      - "{{ app_2_lb.address.ovs7int }}:{{ zone.port }} check healthcheck app-genap"
+      - "{{ app_3_lb.address.ovs7int }}:{{ zone.port }} check healthcheck app-genap"
+    rule: host_app-genap
 
   - backend: app-global
     servers:
-      - "{{ lb4_1.address.ovs6int }}:{{ app_global.port }} check backup healthcheck app-global"
-      - "{{ lb4_2.address.ovs5int }}:{{ app_global.port }} check healthcheck app-global"
-      - "{{ lb4_3.address.ovs5int }}:{{ app_global.port }} check healthcheck app-global"
+      - "{{ app_2_lb.address.ovs7int }}:{{ app_global.port }} check healthcheck app-global"
+      - "{{ app_3_lb.address.ovs7int }}:{{ app_global.port }} check healthcheck app-global"
     rule: host_app-global
 
-  - backend: app-ganjil
-    servers:
-      - "{{ lb4_1.address.ovs6int }}:{{ zone.port }} check healthcheck app-genap"
-    rule: host_app-ganjil net_ganjil
-
 lb4_haproxy_vhosts:
-  - backend: global-app
-    frontend: global-ingress
-    frontend_port: "{{ app_global.port }}"
+  - backend: lb7-genap
     servers:
-      - "{{ app_2_lb.address.ovs7int }}:{{ app_global.port }} check"
-      - "{{ app_3_lb.address.ovs7int }}:{{ app_global.port }} check"
+      - "{{ lb7_1.address.ovs6int }}:{{ hostvars['lb7-1-ganjil']['haproxy']['port_in'] }} check backup" 
+      - "{{ lb7_2.address.ovs5int }}:{{ hostvars['lb7-2-genap']['haproxy']['port_in'] }} check"
+      - "{{ lb7_3.address.ovs5int }}:{{ hostvars['lb7-3-genap']['haproxy']['port_in'] }} check"
+    rule: net_genap
 
-  - backend: genap-app
-    frontend: genap-ingress
-    frontend_port: "{{ zone.port }}"
+  - backend: lb7-ganjil
     servers:
-      - "{{ app_2_lb.address.ovs7int }}:{{ zone.port }} check"
-      - "{{ app_3_lb.address.ovs7int }}:{{ zone.port }} check"
+      - "{{ lb7_1.address.ovs6int }}:{{ hostvars['lb7-1-ganjil']['haproxy']['port_in'] }} check" 
+      - "{{ lb7_2.address.ovs5int }}:{{ hostvars['lb7-2-genap']['haproxy']['port_in'] }} check backup"
+      - "{{ lb7_3.address.ovs5int }}:{{ hostvars['lb7-3-genap']['haproxy']['port_in'] }} check backup"
+    rule: net_ganjil

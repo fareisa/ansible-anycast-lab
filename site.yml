@@ -27,22 +27,23 @@
     - mikrotik
     - bgp
 
-- name: lb7 config
-  hosts: lb7
-  roles:
-    - presetup_lb7
-    - frr
-    - haproxy
-  tags:
-    - lb7
-    - bgp
-
 - name: lb4 config
   hosts: lb4
   roles:
+    - presetup_anycast_int
     - haproxy
+    - frr
   tags:
     - lb4
+    - bgp    
+        
+- name: lb7 config
+  hosts: lb7
+  roles:
+    - haproxy
+  tags:
+    - lb7
+
 - name: app config
   hosts: app
   roles:

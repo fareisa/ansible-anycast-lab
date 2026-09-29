@@ -40,7 +40,7 @@ bgp_connection:
     as: "{{ asn }}"
     remote.as: "{{ hostvars['lb7-1-ganjil']['asn'] }}"
     local.role: ibgp-rr
-    remote.address: "{{ lb7_1.address.ovs3int }}"
+    remote.address: "{{ lb4_1.address.ovs3int }}"
     output.network: none
     nexthop-choice: force-self
     hold-time: 3s
