@@ -41,17 +41,20 @@ frontend stats
   stats uri /
   stats show-modules
 
-{% for vhost in lb4_haproxy_vhosts %}
-frontend {{ vhost.frontend }}
-    bind *:{{ vhost.frontend_port }}
-    use_backend {{ vhost.backend }}
+frontend tcp_in
+    bind {{ anycast_ip }}:{{ haproxy.port_in }}
+
+{% for rule in haproxy_acl.network %}
+    acl {{ rule.acl_name }} src "{{ rule.network }}"
 {% endfor %}
 
-{% for vhost in lb4_haproxy_vhosts  %}
-backend {{ vhost.backend }}
+{% for vhost in lb4_haproxy_vhosts %}
+    use_backend {{ vhost.backend }} if {{ vhost.rule }}
+{% endfor %}
 
+{% for vhost in lb4_haproxy_vhosts %}
+backend {{ vhost.backend }}  
 {% for server in vhost.servers %}
     server {{ vhost.backend }}-{{ loop.index }} {{ server }}
 {% endfor %}
-
 {% endfor %}

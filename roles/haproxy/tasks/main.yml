@@ -27,12 +27,6 @@
     state: present
     update_cache: true
 
-- name: makesure haproxy is start and enabled
-  ansible.builtin.service:
-    name: haproxy
-    state: started
-    enabled: true
-
 - name: deploy configuration
   ansible.builtin.template:
     src: "{{ haproxy.template }}"
@@ -42,3 +36,9 @@
     mode: "0644"
     validate: "/usr/sbin/haproxy -c -f %s"
   notify: restart haproxy
+
+- name: makesure haproxy is start and enabled
+  ansible.builtin.service:
+    name: haproxy
+    state: restarted
+    enabled: true

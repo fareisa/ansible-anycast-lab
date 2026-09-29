@@ -1,2 +1,3 @@
 haproxy:
   template: haproxy.cfg-lb4.j2
+  port_in: 80
