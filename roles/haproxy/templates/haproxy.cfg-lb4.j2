@@ -48,6 +48,10 @@ frontend tcp_in
     acl {{ rule.acl_name }} src "{{ rule.network }}"
 {% endfor %}
 
+{% for rule in haproxy_acl.hostname %}
+    acl {{ rule.acl_name }} hdr(host) -i {{ rule.hostname }}
+{% endfor %}
+
 {% for vhost in lb4_haproxy_vhosts %}
     use_backend {{ vhost.backend }} if {{ vhost.rule }}
 {% endfor %}
