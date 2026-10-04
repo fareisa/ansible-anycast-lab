@@ -57,7 +57,8 @@ frontend tcp_in
 {% endfor %}
 
 {% for vhost in lb4_haproxy_vhosts %}
-backend {{ vhost.backend }}  
+backend {{ vhost.backend }}
+    balance roundrobin
 {% for server in vhost.servers %}
     server {{ vhost.backend }}-{{ loop.index }} {{ server }}
 {% endfor %}

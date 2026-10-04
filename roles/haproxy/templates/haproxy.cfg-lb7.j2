@@ -61,6 +61,7 @@ frontend http_in
 
 {% for vhost in lb7_haproxy_vhosts %}
 backend {{ vhost.backend }}  
+    balance roundrobin
 {% for server in vhost.servers %}
     server {{ vhost.backend }}-{{ loop.index }} {{ server }}
 {% endfor %}
