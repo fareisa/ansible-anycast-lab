@@ -8,7 +8,11 @@ server {
 
     location = /healthz {
         access_log off;
-        try_files /index.html =503;
+        default_type text/plain;
+        if (!-f $document_root/index.html) {
+            return 503;
+        }
+        return 200 "OK";
     }
 
     location / {
@@ -26,7 +30,11 @@ server {
 
     location = /healthz {
         access_log off;
-        try_files /index.html =503;
+        default_type text/plain;
+        if (!-f $document_root/index.html) {
+            return 503;
+        }
+        return 200 "OK";
     }
 
     location / {
