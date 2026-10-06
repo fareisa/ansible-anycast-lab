@@ -69,11 +69,11 @@ lb4_haproxy_vhosts:
       - "{{ lb7_1.address.ovs6int }}:{{ hostvars['lb7-1-ganjil']['haproxy']['port_in'] }} check backup" 
       - "{{ lb7_2.address.ovs5int }}:{{ hostvars['lb7-2-genap']['haproxy']['port_in'] }} check"
       - "{{ lb7_3.address.ovs5int }}:{{ hostvars['lb7-3-genap']['haproxy']['port_in'] }} check"
-    rule: net_genap !net_ganjil
+    rule: net_genap || host_app-global
 
   - backend: lb7-ganjil
     servers:
       - "{{ lb7_1.address.ovs6int }}:{{ hostvars['lb7-1-ganjil']['haproxy']['port_in'] }} check" 
       - "{{ lb7_2.address.ovs5int }}:{{ hostvars['lb7-2-genap']['haproxy']['port_in'] }} check backup"
       - "{{ lb7_3.address.ovs5int }}:{{ hostvars['lb7-3-genap']['haproxy']['port_in'] }} check backup"
-    rule: net_ganjil || host_app-global !net_genap
+    rule: net_ganjil

@@ -40,6 +40,5 @@
 - name: makesure haproxy is start and enabled
   ansible.builtin.service:
     name: haproxy
-    state: restarted
+    state: started
     enabled: true
-  changed_when: false
