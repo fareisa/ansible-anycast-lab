@@ -46,11 +46,11 @@ haproxy_acl:
 ## defaul health with http/1.1 response
 lb7_haproxy_healthcheck:
   - name: app-ganjil
-    uri: /
+    uri: /healthz
     hostname: app-ganjil.wahaha.lab
 
   - name: app-global
-    uri: /
+    uri: /healthz
     hostname: app-global.wahaha.lab
 
 lb7_haproxy_vhosts:

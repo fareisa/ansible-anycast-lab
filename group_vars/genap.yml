@@ -43,11 +43,11 @@ haproxy_acl:
 
 lb7_haproxy_healthcheck:
   - name: app-global
-    uri: /
+    uri: /healthz
     hostname: app-global.wahaha.lab
 
   - name: app-genap
-    uri: /
+    uri: /healthz
     hostname: app-genap.wahaha.lab
 
 lb7_haproxy_vhosts:

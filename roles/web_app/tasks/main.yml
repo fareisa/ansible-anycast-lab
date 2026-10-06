@@ -59,6 +59,3 @@
     state: absent
   notify: Reload Nginx
 
-- name: Validate Nginx configuration
-  ansible.builtin.command: nginx -t
-  changed_when: false
