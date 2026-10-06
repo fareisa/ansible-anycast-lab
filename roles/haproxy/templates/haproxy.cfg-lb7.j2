@@ -44,7 +44,7 @@ frontend stats
 {% for check in lb7_haproxy_healthcheck %}
 healthcheck {{ check.name }}
     type httpchk
-    http-check send meth HEAD uri {{ check.uri }} ver HTTP/1.1 hdr Host {{ check.hostname }}
+    http-check send meth HEAD uri {{ check.uri }} ver HTTP/1.1
     http-check expect status 200
 {% endfor %}
 
