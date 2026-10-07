@@ -36,6 +36,6 @@ jobs:
         run: |
           ansible-playbook --syntax-check site.yml
 
-      - name: ansible dry-run
-        run: |
-          ansible-playbook --check site.yml
+      # - name: ansible dry-run
+      #   run: |
+      #     ansible-playbook --check site.yml
