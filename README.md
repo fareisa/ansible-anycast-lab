@@ -26,8 +26,8 @@ The CI configuration is currently being worked on. I just want to try Ci/Cd pipe
 | --- | --- | --- | --- |
 | Server precheck | `server` | `precheck_server` | Checks that each Ubuntu server's OS hostname matches its inventory name and that its expected IPv4 addresses are present. Runs before the configuration plays. |
 | MikroTik config | `mikrotik` | `presetup_mikrotik`, `ipaddress_mikrotik`, `dhcp_mikrotik`, `bgp_mikrotik` | Creates the lab API user, sets router identity and DNS behavior, configures interfaces and IP addresses, creates DHCP services, and configures RouterOS BGP. |
-| LB7 config | `lb7` | `presetup_lb7`, `frr`, `haproxy` | Prepares the Ubuntu load balancers, installs/configures FRR, validates BGP neighbors, and configures the outer HAProxy layer. |
-| LB4 config | `lb4` | `haproxy` | Installs HAProxy and configures the inner load-balancing layer. |
+| LB4 config | `lb4` | `presetup_anycast_int`, `haproxy`, `frr` | Creates the `anycast0` interface and configures the anycast address, installs HAProxy, installs/configures FRR, and validates BGP neighbors. |
+| LB7 config | `lb7` | `haproxy` | Installs HAProxy and configures the outer load-balancing layer. |
 | App config | `app` | `web_app` | Installs Nginx and publishes the global and zone-specific example pages. |
 
 Run individual sections with tags when troubleshooting:
@@ -64,7 +64,7 @@ before applying the configuration roles.
 │   ├── haproxy/
 │   ├── ipaddress_mikrotik/
 │   ├── precheck_server/
-│   ├── presetup_lb7/
+│   ├── presetup_anycast_int/
 │   ├── presetup_mikrotik/
 │   └── web_app/
 └── test-file-and-other/        # Older experiments and unused examples
@@ -128,11 +128,13 @@ disabled for these devices because i dont need it and it should use gather facts
 	subnet masks, gateways, connectivity, or unexpected extra addresses, so it
 	is a limited sanity check rather than proof that Terraform provisioned the
 	server correctly. The server must be reachable over SSH for fact gathering.
-- `presetup_lb7` prepares the LB7 hosts before routing and anycast IP.
+- `presetup_anycast_int` runs on LB4 hosts, creates the `anycast0` dummy
+	interface, and configures the anycast `/32` address and route.
 - `frr` adds the FRR repository, installs FRR, renders `daemons` and `frr.conf`,
-	and checks that expected BGP peers reach `Established` state.
-- `haproxy` installs HAProxy, selects either the LB4 or LB7 template, validates
-	the generated configuration, and restarts the service when it changes.
+	and checks that expected BGP peers reach `Established` state. It runs on LB4.
+- `haproxy` installs HAProxy, selects the LB4 or LB7 template based on group
+	variables, validates the generated configuration, and restarts the service
+	when it changes. It runs on both LB4 and LB7.
 - `web_app` installs Nginx, creates the configured web roots, renders the global
 	and zone pages, enables the Nginx site, and runs `nginx -t`.
 
